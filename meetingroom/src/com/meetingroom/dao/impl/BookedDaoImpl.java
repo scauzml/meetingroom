@@ -15,7 +15,15 @@ public class BookedDaoImpl extends HibernateDaoSupport implements BookedDao{
 
 	@Override
 	public List<Booked> getAllBKed() {
-		Session session = this.getSession();
+		Session session=null;
+		try {
+			
+			 session= this.getSession();
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("ajslkdfjlaskfjlasdfj\n\n\n\n\n\n\n");
+		}
+		
 		Criteria criteria = session.createCriteria(Booked.class);
 		List<Booked> bookeds=criteria.list();
 		System.out.println(bookeds.get(0).getId());
