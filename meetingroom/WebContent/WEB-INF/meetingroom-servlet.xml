@@ -19,8 +19,9 @@
        <mvc:default-servlet-handler />
        <mvc:annotation-driven />
        <!-- 引用外部资源文件 -->
-       <mvc:resources location="/WEB-INF/image/" mapping="/image/**"/>
+       <mvc:resources location="/WEB-INF/img/" mapping="/img/**"/>
         <mvc:resources location="/WEB-INF/css/" mapping="/css/**"></mvc:resources> 
+        <mvc:resources location="/WEB-INF/js/" mapping="/js/**"></mvc:resources> 
         <!-- 自动扫描此包下的类作为控制器controller -->
        <context:component-scan base-package="com.meetingroom.controller"/>
        <!--视图解析器把string转换成相应的视图  -->

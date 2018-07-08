@@ -83,8 +83,7 @@
         </tx:attributes>
     </tx:advice>
     
-    
-   <bean id="userDao" class="com.meetingroom.dao.impl.UserDaoImpl">
+     <bean id="userDao" class="com.meetingroom.dao.impl.UserDaoImpl">
     <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="BookedDao" class="com.meetingroom.dao.impl.BookedDaoImpl">
