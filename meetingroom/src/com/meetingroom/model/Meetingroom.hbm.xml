@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-7-5 15:10:46 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.meetingroom.model.Meetingroom" table="MEETINGROOM">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="roomname" type="java.lang.String">
+            <column name="ROOMNAME" />
+        </property>
+        <property name="peoplelimit" type="java.lang.String">
+            <column name="PEOPLELIMIT" />
+        </property>
+        <property name="locate" type="java.lang.String">
+            <column name="LOCATE" />
+        </property>
+        <property name="floor" type="java.lang.String">
+            <column name="FLOOR" />
+        </property>
+        <property name="classnum" type="java.lang.String">
+            <column name="CLASSNUM" />
+        </property>
+       <set name="hasSet" table="has" inverse="true" lazy="true" fetch="select">
+        <key>
+        <column name="meetingroom_id"/>
+        </key>
+        <one-to-many class="com.meetingroom.model.Has"/>
+        </set>
+    </class>
+</hibernate-mapping>

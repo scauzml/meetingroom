@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-7-5 15:10:46 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.meetingroom.model.User" table="USER">
+        <id name="userid" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="psd" type="java.lang.String">
+            <column name="PSD" />
+        </property>
+       <property name="name" type="java.lang.String">
+            <column name="name" />
+        </property>
+        <property name="email" type="java.lang.String">
+            <column name="EMAIL" />
+        </property>
+        <property name="userType" type="java.lang.String">
+            <column name="USERTYPE" />
+        </property>
+        <property name="sex" type="java.lang.String">
+            <column name="SEX" />
+        </property>
+        <property name="location" type="java.lang.String">
+            <column name="LOCATION" />
+        </property>
+        <property name="phonenum" type="java.lang.String">
+            <column name="PHONENUM" />
+        </property>
+        <property name="picture" type="java.lang.String">
+            <column name="PICTURE" />
+        </property>
+        <set name="bookedset" table="booked" inverse="true" lazy="true" fetch="select">
+        <key>
+        <column name="user_id"/>
+        </key>
+        <one-to-many class="com.meetingroom.model.Booked"/>
+        </set>
+         <set name="participated" inverse="true" table="participated" lazy="true" fetch="select">
+        <key>
+        <column name="user_id"/>
+        </key>
+        <one-to-many class="com.meetingroom.model.Participated"/>
+        </set>
+    </class>
+</hibernate-mapping>

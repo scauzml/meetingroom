@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+  http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>meetingroom</display-name>
+  <!-- 统一编码，解决中文乱码问题 -->
+  <filter>
+  <filter-name>charsetEncoding</filter-name>
+  <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+  <init-param>
+  <param-name>encoding</param-name>
+  <param-value>UTF-8</param-value>
+  </init-param>
+  <init-param>
+  <param-name>forceEncoding</param-name>
+  <param-value>true</param-value>
+  </init-param>
+  </filter>
+  <filter-mapping>
+  <filter-name>charsetEncoding</filter-name>
+  <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- springmvc  -->
+   <servlet>
+   <servlet-name>meetingroom</servlet-name><!--项目名称  -->
+   <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class><!-- 前端控制器 -->
+   <load-on-startup>1</load-on-startup>
+   </servlet>
+   <servlet-mapping>
+   <servlet-name>meetingroom</servlet-name>
+   <url-pattern>/</url-pattern><!-- 默认接收http://localhost:8080/restaurant/***后任何的形式请求连接 -->
+   </servlet-mapping>
+   <!-- 加载spring -->
+   <context-param>
+   <param-name>contextConfigLocation</param-name>
+   <param-value>classpath:/applicationContext.xml</param-value><!-- spring和Hibernate的属性文件配置都在这个配置文件里 -->
+   </context-param>
+   <listener>
+   <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class><!-- 这个忘了 -->
+   </listener>
+</web-app>

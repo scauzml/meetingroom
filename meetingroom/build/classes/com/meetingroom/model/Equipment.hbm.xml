@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-7-5 14:59:55 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.meetingroom.model.Equipment" table="EQUIPMENT">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="equipment" type="java.lang.String" access="field">
+            <column name="EQUIPMENT" />
+        </property>
+        <set name="hasSet" table="has" inverse="true" lazy="true" fetch="select">
+        <key>
+        <column name="equipment_id"/>
+        </key>
+        <one-to-many class="com.meetingroom.model.Has"/>
+        </set>
+    </class>
+</hibernate-mapping>
