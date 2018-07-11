@@ -7,11 +7,14 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.meetingroom.dao.MeetingroomDao;
 import com.meetingroom.model.Meetingroom;
 import com.meetingroom.model.User;
+
 
 public class MeetingroomDaoImpl extends HibernateDaoSupport implements MeetingroomDao{
 
@@ -60,6 +63,28 @@ public class MeetingroomDaoImpl extends HibernateDaoSupport implements Meetingro
 		session.delete(session);
 		session.flush();
 		session.close();
+	}
+
+	@Override
+	public List<Meetingroom> getMRByPage(int page) {
+		// TODO Auto-generated method stub
+		 Session session=this.getSession();
+		 Criteria criteria=session.createCriteria(Meetingroom.class);
+		 criteria.setFirstResult(15*(page-1));
+		 criteria.setMaxResults(15);
+		 return criteria.list();
+		
+	}
+
+	@Override
+	public List<Meetingroom> searchByLocation(Meetingroom meetingroom) {
+		// TODO Auto-generated method stub
+		Session session =this.getSession();
+		Criteria criteria =session.createCriteria(Meetingroom.class);
+		if(meetingroom!=null) {
+			criteria.add(Restrictions.like("locate", meetingroom.getLocate(), MatchMode.ANYWHERE));		
+		}
+		return criteria.list();
 	}
 	
 	

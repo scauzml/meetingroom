@@ -1,0 +1,213 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html class="no-js fixed-layout">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>WEB</title>
+    <meta name="description" content="这是主页/jsp的">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
+    <link rel="stylesheet" href="assets/css/admin.css" >
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+    以获得更好的体验！</p>
+<![endif]-->
+
+<header class="am-topbar am-topbar-inverse admin-header">
+    <div class="am-topbar-brand">
+        <strong>会议室</strong> <small>管理</small>
+    </div>
+
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+
+        <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
+            <li class="am-dropdown" data-am-dropdown>
+                <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+                    <span class="am-icon-users"></span> 管理员 <span class="am-icon-caret-down"></span>
+                </a>
+                <ul class="am-dropdown-content">
+                    <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
+                    <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+                </ul>
+            </li>
+            <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+        </ul>
+    </div>
+</header>
+
+<div class="am-cf admin-main">
+    <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
+        <div class="am-offcanvas-bar admin-offcanvas-bar">
+            <ul class="am-list admin-sidebar-list">
+                <li><a href="#"><span class="am-icon-home"></span> 首页</a></li>
+                <li class="admin-parent">
+                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 个人预订 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1">
+                        <li><a href="user-booking.html" class="am-cf"><span class="am-icon-check"></span>预订中<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
+                        <li><a href="user-bookHistory.html"><span class="am-icon-calendar"></span> 预订历史</a></li>
+
+                    </ul>
+                </li>
+
+                <li class="admin-parent">
+                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 个人信息 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
+                        <li><a href="user-information.html" class="am-cf"><span class="am-icon-table"></span>修改个人信息 <span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
+                        <li><a href="user-updatepsd.html"><span class="am-icon-calendar"></span> 修改密码</a></li>
+
+                    </ul>
+                </li>
+
+            </ul>
+
+            <div class="am-panel am-panel-default admin-sidebar-panel">
+                <div class="am-panel-bd">
+                    <p><span class="am-icon-bookmark"></span> 公告</p>
+                    <p>根据需要查询/预订会议室。—— 管理员</p>
+                </div>
+            </div>
+
+            <div class="am-panel am-panel-default admin-sidebar-panel">
+                <div class="am-panel-bd">
+                    <p><span class="am-icon-tag"></span> Welcome</p>
+                    <p>Hello ，World!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="admin-content-body">
+            <div class="am-cf am-padding am-padding-bottom-0">
+                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">预订历史</strong> / <small>Articles Table</small></div>
+            </div>
+
+            <hr>
+
+            <div class="am-g">
+                <div class="am-u-sm-12 am-u-md-6">
+                    <div class="am-btn-toolbar">
+
+                    </div>
+                </div>
+                <div class="am-u-sm-12 am-u-md-3">
+
+                </div>
+                <div class="am-u-sm-12 am-u-md-3">
+                    <div class="am-input-group am-input-group-sm">
+                        <input type="text" class="am-form-field">
+                        <span class="am-input-group-btn">
+            <button class="am-btn am-btn-default" type="button">搜索</button>
+          </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="am-g">
+                <div class="am-u-sm-12">
+                    <form class="am-form" id="am-form">
+
+
+                        <hr />
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="admin-content-footer">
+            <hr>
+            <p class="am-padding-left">© 2014 AllMobilize, Inc. Licensed under MIT license.</p>
+        </footer>
+
+    </div>
+    <!-- content end -->
+
+    <!-- content end -->
+
+</div>
+
+<a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
+
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<script src="assets/js/amazeui.min.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+    window.onload=function () {
+        $.ajax({
+            type: "GET",
+            url: "user-booking.action",
+            data: {"status": "login", "userID": "userID"},
+            success: function (result) {
+                var obj=$.parseJSON(result);
+                var data=obj.data;//获得数据
+                //动态生成表格
+                var tableInf=document.getElementById("am-form");
+                var code='   <table class="am-table am-table-striped am-table-hover table-main">' +
+                    '                            <thead>' +
+                    '                            <tr>' +
+                    '                                <th class="table-check"><input type="checkbox" /></th><th class="table-id">ID</th><th class="table-title">预定时间</th><th class="table-type">会议室地址</th><th class="table-author am-hide-sm-only">预定人</th><th class="table-date am-hide-sm-only">状态</th>' +
+                    '                            </tr>' +
+                    '                            </thead>' +
+                    '                            <tbody>';
+
+                for(var i=0;i< obj.length;i++){
+                    code +=' <tr>' +
+                        '                                <td><input type="checkbox" name="isSelect" value="'+data[i].roomId+'" /></td>' +
+                        '                                <td>'+data[i].roomId+'</td>' +
+                        '                                <td>'+data[i].time+'</td>' +
+                        '                                <td>'+data[i].address+'</td>' +
+                        '                                <td class="am-hide-sm-only">'+data[i].book_user+'</td>' +
+                        '                                <td class="am-hide-sm-only">'+data[i].status+'</td>' +
+                        '                                <td>' +
+                        '                                    <div class="am-btn-toolbar">' +
+                        '                                        <div class="am-btn-group am-btn-group-xs">' +
+                        '                                        </div>' +
+                        '                                    </div>' +
+                        '                                </td>' +
+                        '                            </tr>';
+                }
+                tableInf.innerHTML=code+"</tbody>" +
+                    "                    </table >"+"                        <div class=\"am-cf\" id=\"am-cf\">" +
+                    "                            共 "+obj.length+"条记录" +
+                    "                            <div class=\"am-fr\">" +
+                    "                                <ul class=\"am-pagination\">" +
+                    "                                    <li class=\"am-disabled\"><a href=\"#\">«</a></li>" +
+                    "                                    <li class=\"am-active\"><a href=\"#\">1</a></li>" +
+                    "                                    <li><a href=\"#\">2</a></li>" +
+                    "                                    <li><a href=\"#\">3</a></li>" +
+                    "                                    <li><a href=\"#\">4</a></li>" +
+                    "                                    <li><a href=\"#\">5</a></li>" +
+                    "                                    <li><a href=\"#\">»</a></li>" +
+                    "                                </ul>" +
+                    "                            </div>" +
+                    "                        </div>";
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

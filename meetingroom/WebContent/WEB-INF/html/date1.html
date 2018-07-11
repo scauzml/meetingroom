@@ -1,0 +1,44 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Administrator
+  Date: 2018/7/5
+  Time: 23:13
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Dynarch Calendar -- Single calendar for multiple fields</title>
+    <script src="date/jscal2.js"></script>
+    <script src="date/en.js"></script>
+    <link rel="stylesheet" type="text/css" href="date/jscal2.css" />
+    <link rel="stylesheet" type="text/css" href="date/border-radius.css" />
+    <link rel="stylesheet" type="text/css" href="date/steel/steel.css" />
+</head>
+<body>
+
+<div>
+<input size="30" id="f_date1" />
+<button id="f_btn1">...</button><br />
+<input size="30" id="f_date2" /><button id="f_btn2">...</button><br />
+
+
+<script type="text/javascript">//<![CDATA[
+
+var cal = Calendar.setup({
+    onSelect: function(cal) { cal.hide() },
+    min:20180701,
+    max:20200909,
+    showTime: true
+});
+cal.manageFields("f_btn1", "f_date1", "%Y-%m-%d %I:%M %p");
+cal.manageFields("f_btn2", "f_date2", "%b %e, %Y %I:%M %p");
+cal.manageFields("f_btn3", "f_date3", "%e %B %Y %I:%M %p");
+cal.manageFields("f_btn4", "f_date4", "%A, %e %B, %Y %I:%M %p");
+
+//]]></script>
+</div>
+
+
+</body>
+</html>

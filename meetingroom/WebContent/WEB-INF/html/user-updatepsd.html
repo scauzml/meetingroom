@@ -1,0 +1,217 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html class="no-js fixed-layout">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>会议室</title>
+    <meta name="description" content="这是主页/jsp的">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
+    <link rel="stylesheet" href="assets/css/admin.css" >
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script>
+        function KeyUp() {
+            var a = $('#user-newpsd').val();
+            var b = $('#user-newpsd2').val();
+            if (a == b) {
+                $('#btn1').removeAttr('disabled');
+                $('#btn1').text("修改密码");
+            } else {
+                $('#btn1').attr('disabled', 'disabled');
+                $('#btn1').text("密码不一致");
+            }
+        }
+    </script>
+</head>
+<body>
+<script>
+    function KeyUp() {
+        var a = $('#user-newpsd').val();
+        var b = $('#user-newpsd2').val();
+        if (a == b) {
+            $('#btn1').removeAttr('disabled');
+            $('#btn1').text("修改密码");
+        } else {
+            $('#btn1').attr('disabled', 'disabled');
+            $('#btn1').text("密码不一致");
+        }
+    }
+</script>
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+    以获得更好的体验！</p>
+<![endif]-->
+
+<header class="am-topbar am-topbar-inverse admin-header">
+    <div class="am-topbar-brand">
+        <strong>会议室</strong> <small>管理</small>
+    </div>
+
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+
+        <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
+            <li class="am-dropdown" data-am-dropdown>
+                <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+                    <span class="am-icon-users"></span> 用户<span class="am-icon-caret-down"></span>
+                </a>
+                <ul class="am-dropdown-content">
+                    <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
+                    <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+                </ul>
+            </li>
+            <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+        </ul>
+    </div>
+</header>
+
+<div class="am-cf admin-main">
+    <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
+        <div class="am-offcanvas-bar admin-offcanvas-bar">
+            <ul class="am-list admin-sidebar-list">
+                <li><a href="user-booking.html"><span class="am-icon-home"></span> 首页</a></li>
+                <li class="admin-parent">
+                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 个人预订 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1">
+                        <li><a href="/user-booking.html" class="am-cf"><span class="am-icon-check"></span>预订中<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
+                        <li><a href="user-bookHistory.html"><span class="am-icon-calendar"></span> 预订历史</a></li>
+
+                    </ul>
+                </li>
+
+                <li class="admin-parent">
+                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 个人信息 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
+                        <li><a href="user-information.html" class="am-cf"><span class="am-icon-table"></span>修改个人信息 <span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
+                        <li><a href="user-updatepsd.html"><span class="am-icon-calendar"></span> 修改密码</a></li>
+
+                    </ul>
+                </li>
+
+            </ul>
+
+            <div class="am-panel am-panel-default admin-sidebar-panel">
+                <div class="am-panel-bd">
+                    <p><span class="am-icon-bookmark"></span> 公告</p>
+                    <p>根据需要查询/预订会议室。—— 管理员</p>
+                </div>
+            </div>
+
+            <div class="am-panel am-panel-default admin-sidebar-panel">
+                <div class="am-panel-bd">
+                    <p><span class="am-icon-tag"></span> Welcome</p>
+                    <p>Hello ，World!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="admin-content-body">
+            <div class="am-cf am-padding am-padding-bottom-0">
+                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">个人资料</strong> / <small>Personal information</small></div>
+            </div>
+
+            <hr/>
+
+            <div class="am-g">
+                <div class="am-u-sm-12 am-u-md-4 am-u-md-push-8">
+                </div>
+
+                <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
+                    <form class="am-form am-form-horizontal" action="" method="get">
+
+                        <div class="am-form-group">
+                            <label for="user-prepsd" class="am-u-sm-3 am-form-label">原来密码</label>
+                            <div class="am-u-sm-9">
+                                <input type="password"  id="user-prepsd" name="user-prepsd" placeholder="输入用户的帐号密码" value="" required="required">
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <label for="user-newpsd" class="am-u-sm-3 am-form-label">输入新密码</label>
+                            <div class="am-u-sm-9">
+                                <input type="password"  onkeyup="KeyUp()" id="user-newpsd" name="user-newpsd" placeholder="输入新密码" value="" required="required" >
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <label for="user-newpsd2" class="am-u-sm-3 am-form-label">再次输入密码</label>
+                            <div class="am-u-sm-9">
+                                <input type="password" onkeyup="KeyUp()" id="user-newpsd2" name="user-newpsd2" placeholder="再次输入新密码" value="" required="required" >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                <button id="btn1" type="submit" class="am-btn am-btn-primary" >修改密码</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <footer class="admin-content-footer">
+            <hr>
+            <p class="am-padding-left">© Hello World.</p>
+        </footer>
+
+    </div>
+    <!-- content end -->
+
+</div>
+
+<a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
+
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<script src="assets/js/amazeui.min.js"></script>
+<script src="assets/js/app.js"></script>
+
+</body>
+<script>
+    function KeyUp() {
+        var a = $('#user-newpsd').val();
+        var b = $('#user-newpsd2').val();
+        if (a == b) {
+            $('#btn1').removeAttr('disabled');
+            $('#btn1').text("修改密码");
+        } else {
+            $('#btn1').attr('disabled', 'disabled');
+            $('#btn1').text("密码不一致");
+        }
+    }
+</script>
+<script>
+    $("#btn1").click(function () {
+        $.ajax({
+                type: "POST",//为post请求
+                url: "updatePSD.action",//这是我在后台接受数据的文件名
+                data: {"oldPassword":$('#user-newpsd').val(),"newPassword":$('#user-newpsd').val()},//将该表单序列化
+                async: false,//设置成true，这标志着在请求开始后，其他代码依然能够执行。如果把这个选项设置成false，这意味着所有的请求都不再是异步的了，这也会导致浏览器被锁死
+                success: function (result) {
+                alert(result);
+                }
+            }
+        )
+    }
+    )
+</script>
+</html>

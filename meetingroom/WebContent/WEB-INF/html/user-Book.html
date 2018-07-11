@@ -1,0 +1,341 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html class="no-js fixed-layout">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CMS WEB</title>
+    <meta name="description" content="这是主页/jsp的">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
+    <link rel="stylesheet" href="assets/css/admin.css" >
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="jquery-ui.css">
+    <link rel="stylesheet" href="date/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $( "#datepicker" ).datepicker();
+        } );
+    </script>
+</head>
+<body>
+
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+    以获得更好的体验！</p>
+<![endif]-->
+<header class="am-topbar am-topbar-inverse admin-header">
+    <div class="am-topbar-brand">
+        <strong>会议室</strong> <small>管理</small>
+    </div>
+
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+
+        <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
+            <li class="am-dropdown" data-am-dropdown>
+                <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+                    <span class="am-icon-users"></span> 管理员 <span class="am-icon-caret-down"></span>
+                </a>
+                <ul class="am-dropdown-content">
+                    <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
+                    <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+                </ul>
+            </li>
+            <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+        </ul>
+    </div>
+</header>
+
+<div class="am-cf admin-main">
+    <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
+        <div class="am-offcanvas-bar admin-offcanvas-bar">
+            <ul class="am-list admin-sidebar-list">
+                <li><a href="#"><span class="am-icon-home"></span> 首页</a></li>
+                <li class="admin-parent">
+                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 个人预订 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1">
+                        <li><a href="/user-booking.html" class="am-cf"><span class="am-icon-check"></span>预订中<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
+                        <li><a href="user-bookHistory.html"><span class="am-icon-calendar"></span> 预订历史</a></li>
+                    </ul>
+                </li>
+
+                <li class="admin-parent">
+                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 个人信息 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
+                        <li><a href="/user-information.html" class="am-cf"><span class="am-icon-table"></span>修改个人信息 <span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
+                        <li><a href="/user-updatepsd.html"><span class="am-icon-calendar"></span> 修改密码</a></li>
+
+                    </ul>
+                </li>
+
+            </ul>
+
+            <div class="am-panel am-panel-default admin-sidebar-panel">
+                <div class="am-panel-bd">
+                    <p><span class="am-icon-bookmark"></span> 公告</p>
+                    <p>根据需要查询/预订会议室。—— 管理员</p>
+                </div>
+            </div>
+
+            <div class="am-panel am-panel-default admin-sidebar-panel">
+                <div class="am-panel-bd">
+                    <p><span class="am-icon-tag"></span> Welcome</p>
+                    <p>Hello ，World!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- content start -->
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="admin-content-body">
+            <div class="am-cf am-padding">
+                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">预订</strong></div>
+            </div>
+            <div class="am-g">
+                <form id="form1" name="form1" >
+                    <div role="tablist" id="accordion-1">
+
+
+                        <div class="card">
+                            <div class="card-header" role="tab">
+                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="true" aria-controls="accordion-1 .item-1" href="div#accordion-1 .item-1">设备选择</a></h5>
+                            </div>
+                            <div class="collapse show item-1" role="tabpanel" data-parent="#accordion-1">
+                                <div class="card-body">
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2" name="equipment1"><label class="form-check-label" for="formCheck-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多媒体室</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-4" name="equipment2"><label class="form-check-label" for="formCheck-4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电脑室</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-3" name="equipment3"><label class="form-check-label" for="formCheck-3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;舞蹈室</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1" name="equipment4"><label class="form-check-label" for="formCheck-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小型办公室</label></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header" role="tab">
+                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false" aria-controls="accordion-1 .item-2" href="div#accordion-1 .item-2">楼层选择</a></h5>
+                            </div>
+                            <div class="collapse item-2" role="tabpanel" data-parent="#accordion-1">
+                                <div class="card-body">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-5">
+                                        <label class="form-check-label" for="formCheck-5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择楼层</label>
+                                    </div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-6" name="floor1"><label class="form-check-label" for="formCheck-6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l楼</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-7" name="floor2"><label class="form-check-label" for="formCheck-7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2楼</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-8" name="floor3"><label class="form-check-label" for="formCheck-8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3楼</label></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header" role="tab">
+                                <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false" aria-controls="accordion-1 .item-3" href="div#accordion-1 .item-3">时间段选择</a></h5>
+                            </div>
+                            <div class="collapse item-3" role="tabpanel" data-parent="#accordion-1">
+                                <div class="card-body">
+                                    选择时间段: <input type="text" id="datepicker" name="date">
+                                    <select id="test" name="time" >
+                                        <optgroup label="选择时间段">
+                                            <option value="9:00-10:00" selected="" id="test1">9:00-10:00</option>
+                                            <option value="10:00-11:00" id="test2">10:00-11:00</option>
+                                            <option value="11:00-12:00" id="test3">11:00-12:00</option>
+                                            <option value="12:00-13:00" id="test4">12:00-13:00</option>
+                                            <option value="13:00-14:00" id="test5">13:00-14:00</option>
+                                            <option value="14:00-15:00" id="test6">14:00-15:00</option>
+                                            <option value="15:00-16:00" id="test7">15:00-16:00</option>
+                                            <option value="16:00-17:00" id="test8">16:00-17:00</option>
+                                        </optgroup>
+                                    </select>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <input  id="btn1" type="submit" value="提交">
+                    </div>
+                <script src="assets/js/jquery.min.js"></script>
+                <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+                </form>
+
+                <div id="con">
+                    <table id="roomtable"class="am-table am-table-striped am-table-hover table-main" style="display:none">
+                        <thead>
+                        <tr>
+                            <th class="table-check"><input type="checkbox" /></th><th class="table-id">ID</th><th class="table-title">位置</th><th class="table-type">楼层</th><th class="table-author am-hide-sm-only">容纳人数</th><th class="table-date am-hide-sm-only">设备</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" name="isSelect"/></td>
+                                <td>ID</td>
+                                <td><a href="#">TEST</a></td>
+                                <td>TEST</td>
+                                <td class="am-hide-sm-only">TEST</td>
+                                <td class="am-hide-sm-only">TEST</td>
+                                <td>
+                                    <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table >
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="admin-content-footer">
+            <hr>
+            <p class="am-padding-left">© 2018 AllMobilize, Inc. Licensed under MIT license.</p>
+        </footer>
+    </div>
+    <!-- content end -->
+
+
+</div>
+
+<a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
+
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<script>
+    function show() {
+        var myTable= document.getElementById("roomtable");
+        myTable.style.display="table";
+    }
+
+    function hide() {
+        var myTable= document.getElementById('roomtable');
+        myTable.style.display ="none";
+    }
+</script>
+
+
+<script>
+    $('#btn1').click(function(){
+        $.ajax({
+            type:"GET",//为post请求
+            url:"userBook.action",//这是我在后台接受数据的文件名
+            data:$('#form1').serialize(),//将该表单序列化
+            async:false,//设置成true，这标志着在请求开始后，其他代码依然能够执行。如果把这个选项设置成false，这意味着所有的请求都不再是异步的了，这也会导致浏览器被锁死
+            success:function(){//请求成功之后的操作
+            }
+        });
+        document.getElementById("roomtable").style.display="table";
+        return false;
+    })
+</script>
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<script src="assets/js/amazeui.min.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+    $("#btn1").click(function () {
+        $.ajax({
+            type:"GET",//为post请求
+            url:"user-bookk.action",//这是我在后台接受数据的文件名
+            data:$('#form1').serialize(),//将该表单序列化
+            async:false,//设置成true，这标志着在请求开始后，其他代码依然能够执行。如果把这个选项设置成false，这意味着所有的请求都不再是异步的了，这也会导致浏览器被锁死
+            success:function(result){//请求成功之后的操作
+                var obj=$.parseJSON(result);
+                var length=obj.len;
+                var data=obj.data;//获得数据
+
+                //var myTable= document.getElementById("roomtable");
+                //myTable.style.display="table";
+                //动态生成表格
+                var tableInf=document.getElementById("con");
+                var code='    <table id="roomtable"class="am-table am-table-striped am-table-hover table-main" style="display:table">';
+                code+='<thead>' +
+                    '                        <tr>' +
+                    '                            <th class="table-check"><input type="checkbox" /></th><th class="table-id">ID</th><th class="table-title">位置</th><th class="table-type">楼层</th><th class="table-author am-hide-sm-only">容纳人数</th><th class="table-date am-hide-sm-only">设备</th>' +
+                    '                        </tr>' +
+                    '                        </thead>' +
+                    '                        <tbody>';
+                for(var i=0;i< length;i++){
+
+                        code +=' <tr>' +
+                            '                                <td><input type="checkbox" name="isSelect" value="'+data[i].ID+'" /></td>' +
+                            '                                <td>'+data[i].ID+'</td>' +
+                            '                                <td>'+data[i].location+'</a></td>' +
+                            '                                <td>'+data[i].floor+'</td>' +
+                            '                                <td class="am-hide-sm-only">'+data[i].limit+'</td>' +
+                            '                                <td class="am-hide-sm-only">'+data[i].equipment+'</td>' +
+                            '                                <td>' +
+                            '                                    <div class="am-btn-toolbar">' +
+                            '                                        <div class="am-btn-group am-btn-group-xs">' +
+                            '                                        </div>' +
+                            '                                    </div>' +
+                            '                                </td>' +
+                            '                            </tr>';
+                }
+                tableInf.innerHTML=code+"</tbody>" +
+                    "                    </table >"+'<input  id="btn2" type="submit" value="提交" onclick="subbmit()">';
+
+            }
+        });
+    })
+
+</script>
+
+<script>
+    function subbmit() {
+       //var options=$("#test option:selected");
+        //var time=options.text();
+        var obj=document.getElementById('test');
+        var index=obj.selectedIndex; //序号，取当前选中选项的序号
+        var time = obj.options[index].value;
+       var number='';
+       var date=document.getElementById("datepicker");
+       $('input:checkbox[name=isSelect]:checked').each(function(k){
+           if(k == 0){
+               number = $(this).val();
+           }else{
+               number=0;
+               alert("选择一个");
+           }
+       });
+
+       $.ajax({
+           type:"GET",//为post请求
+           url:"addBook.action",//这是我在后台接受数据的文件名
+           contentType: 'application/json;charset=utf-8',
+           data: {"number":number,"date":$("#datepicker").val(),"time":document.getElementById('test').options[document.getElementById('test').selectedIndex].value,"user":"001"},
+           //data:{"number":number,"date":date,"time":time,"user":"001"},//将该表单序列化
+           async:false,//设置成true，这标志着在请求开始后，其他代码依然能够执行。如果把这个选项设置成false，这意味着所有的请求都不再是异步的了，这也会导致浏览器被锁死
+           success:function(result) {//请求成功之后的操作
+               if(result == "Success"){
+                   //根据字串返回页面
+                   alert("Success");
+                   window.location.href="user-booking.html";
+               }
+           }
+       });
+   }
+
+</script>
+
+</body>
+</html>

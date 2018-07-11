@@ -1,0 +1,89 @@
+@charset "utf-8";
+/* Base Reset */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,small,strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video {margin: 0;padding: 0;}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {	display: block;}
+:focus { outline:0;}
+img { border:0;}
+body {line-height: 1;}
+ol, ul {list-style: none;}
+blockquote, q {	quotes: none;}
+blockquote:before, blockquote:after,q:before, q:after {	content: '';	content: none;}
+table {	border-collapse: collapse;	border-spacing: 0;}
+.clear { width:100%; height:0; line-height:0; font-size:0; overflow:hidden; clear:both; display:block; _display:inline;}
+.none { display:none;}
+.hidden { visibility:hidden;}
+.clearfix:after{clear: both;content: ".";display: block;height: 0;visibility: hidden;}
+.clearfix{display: block; *zoom:1;}
+
+/**布局开始**/
+body { background:#EBEBEB;}
+body,p { font:12px/1 "宋体"; color:#000;}
+a { color:#000; text-decoration:none;}
+a:hover { color:#FF0000;}
+.wrapper { width:100%; margin:0 auto;}
+.wrapper .inner { width:900px; margin:0 auto; background:#fff;} /**页面全局宽度**/
+
+/**页头开始**/
+#header {}
+#header .inner {}
+.head { width:100%; height:137px;}    /**页头部分**/
+.navbar { width:100%; height:38px; background:url(images/navbar.png) repeat-x 0 50%;}   	/**导航区域背景**/
+.navbar .navbox { width:800px; height:38px; margin:0 auto;}   /**导航窗口大小及位置**/
+
+/**导航样式：后台绑定时也可以定义配置**/
+.navbar .navbox .wp_nav,.navbar .navbox .nav { height:38px;}  /**导航高度**/
+.navbar .navbox .wp_nav li.nav-item a { font-size:15px; font-weight:bold; color:#fff; font-family: "宋体"; text-shadow: 1px 1px 0px #000; background: url(images/xian1.png) no-repeat left center;}
+.navbar .navbox .wp_nav li.nav-item.i1 a { background: none;}
+.navbar .navbox .wp_nav li.nav-item a:hover,.navbar .navbox .wp_nav li.nav-item a.parent{}   	/**鼠标经过或当前选中时样式**/
+.navbar .navbox .wp_nav li.nav-item a span.item-name { padding:0 15px; height:38px; line-height:38px;}   /**导航栏目高度与边距**/
+.navbar .navbox .wp_nav .sub-nav {background: url(images/sub_nav.png) no-repeat right center; z-index: 1000;}
+.navbar .navbox .wp_nav .sub-nav li.nav-item i.mark {background: none;}  /**子菜单背景**/
+.navbar .navbox .wp_nav .sub-nav li.nav-item a {text-align: center;font-size: 12px;font-weight:normal;line-height: 30px;height: 30px;border-top: 0px solid #D8E1CC;color: #006600;text-shadow: 0px 0px 0px #000;background: url(images/xian2.png) no-repeat left 5px;}		/**子菜单字体样式**/
+.navbar .navbox .wp_nav .sub-nav li.nav-item.i2-1 a { background: url(images/scau_18.png) no-repeat left;}
+.navbar .navbox .wp_nav .sub-nav li.nav-item.i3-1 a { background: url(images/scau_18.png) no-repeat left;}
+.navbar .navbox .wp_nav .sub-nav li.nav-item.i4-1 a { background: url(images/scau_18.png) no-repeat left;}
+.navbar .navbox .wp_nav .sub-nav li.nav-item.i5-1 a { background: url(images/scau_18.png) no-repeat left;}
+.navbar .navbox .wp_nav .sub-nav li.nav-item.i6-1 a { background: url(images/scau_18.png) no-repeat left;}
+.navbar .navbox .wp_nav .sub-nav li.nav-item.i7-1 a { background: url(images/scau_18.png) no-repeat left;}
+.navbar .navbox .wp_nav .sub-nav li.nav-item.i8-1 a { background: url(images/scau_18.png) no-repeat left;}
+.navbar .navbox .wp_nav .sub-nav li.nav-item a:hover,.navbar .navbox .wp_nav .sub-nav li.nav-item a.parent {color: #006600;}
+.navbar .navbox .wp_nav .sub-nav li.nav-item a span.item-name { padding:0 10px; height:26px; line-height:26px;}		/**子菜单栏目高度与边距**/
+
+.col_menu_head { padding: 0 20px; margin: 0 auto; background: url(images/scau_2012_4.gif) repeat-y left;}
+.col_name { width: 170px; background: #336600; height: 22px; line-height: 22px; text-align: center; color: #fff; font-size: 12px;}
+.col_news_con { padding: 15px 20px; margin: 0 auto; background: url(images/scau_2012_4.gif) repeat-y left;}
+
+.col_news { width:728px; float:right;} /**栏目新闻**/
+.col_news_head { background:url(images/scau_2012_4.gif) repeat-y left;}
+.col_metas .col_path {display:inline-block;float: left;white-space:nowrap;height: 22px;line-height: 22px;margin-top:5px;margin-left: 20px;} /**当前位置**/
+
+.col_news_box { padding:10px 0; margin:0 7px;}
+.col_news_list { margin-top:7px;}
+.col_news_list .wp_article_list .list_item { height: 28px; line-height: 28px; border-bottom: 1px dashed #ccc;}  /**栏目新闻列表**/
+.col_news_list .wp_article_list .list_item .Article_Index { display: none; background:url(images/li.gif) no-repeat center;}  /**栏目新闻图标序号**/
+.col_news_list .wp_article_list .list_item .Article_PublishDate { font-size: 14px; color: #000;}
+.col_news_list .wp_entry,.col_news_list .wp_entry p { line-height:1.6; font-size:14px; color:#333;}
+.col_news_list .wp_entry p { margin-bottom:6px;}
+.col_news_list .wp_entry img { max-width:680px; _width:expression(this.width > 680 ? "680px" : this.width); }   /**列表页文章图片大小限制**/
+
+.wp_paging, .wp_paging a { display: block; margin: 0; padding: 0; list-style: none; font-size: 12px; font-family: "宋体"; color: #000 !important; float: right;}
+
+/**文章页**/
+.infobox {padding: 0 20px;margin:0 auto;background: url(images/scau_2012_4.gif) repeat-y left;}
+.article {}
+.article h1.arti_title { line-height:30px; font-family: "宋体"; padding:10px 5px; text-align:center; font-size:20px; color:#008000;} /**文章标题**/
+.article .arti_metas { padding:10px; text-align:center; border-bottom: 1px solid #D8D8D8;}
+.article .arti_metas span { margin:0 10px; font-size:12px; color:#000;} /**文章其他属性**/
+.article .entry { padding-top:15px; margin:0 auto; overflow:hidden; min-height:400px;} /**文章内容**/
+.article .entry .read,.article .entry .read p { line-height:1.6; font-size:14px; color:#333;}  /**阅读字体**/
+.article .entry .read p { margin-bottom:6px;}
+.article .entry .read img { max-width:940px; _width:expression(this.width > 940 ? "940px" : this.width); }   /**文章阅读部分图片大小限制**/
+.close { text-align:center; line-height:22px;}
+.possplit { width:16px; background:url(images/posslit.png) no-repeat center;}
+
+/**页脚开始**/
+#footer {}
+#footer .inner { background:url(images/scau_2.gif) no-repeat center top;}
+#footer .inner .foot { width:100%;text-align:center; padding:25px 0;}
+#footer .inner .foot p { line-height:20px; color:#333;}

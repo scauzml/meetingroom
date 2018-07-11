@@ -32,13 +32,13 @@
         <property name="picture" type="java.lang.String">
             <column name="PICTURE" />
         </property>
-        <set name="bookedset" table="booked" inverse="true" lazy="true" fetch="select">
+        <set name="bookedset" table="booked" inverse="true" lazy="false" fetch="select">
         <key>
         <column name="user_id"/>
         </key>
         <one-to-many class="com.meetingroom.model.Booked"/>
         </set>
-         <set name="participated" inverse="true" table="participated" lazy="true" fetch="select">
+         <set name="participated" inverse="true" table="participated" lazy="false" fetch="select">
         <key>
         <column name="user_id"/>
         </key>

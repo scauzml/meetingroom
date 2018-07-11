@@ -1,0 +1,166 @@
+package com.meetingroom.controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.meetingroom.model.Booked;
+import com.meetingroom.model.Log;
+import com.meetingroom.model.User;
+import com.meetingroom.service.BookedService;
+import com.meetingroom.service.LogService;
+import com.meetingroom.service.UserService;
+
+public class UserMessageController {
+
+	@Autowired
+    UserService userService;
+	@Autowired
+	BookedService bookedService;
+	@Autowired
+	LogService logService;
+	@Autowired
+    public void setLogService(LogService logService) {
+		this.logService = logService;
+	}
+	@Autowired
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+    @Autowired
+    public void setBookedService(BookedService bookedService) {
+		this.bookedService = bookedService;
+	}
+
+	@RequestMapping(value="")//个人信息
+    public void getMessage(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    	User user=new User();
+    	Integer user_id=Integer.valueOf(request.getParameter("user_id").toString());
+    	user.setUserid(user_id);
+    	List<User> userList=userService.searchUserByIdOrName(user);
+    	User myuser=userList.get(0);
+    	String name=myuser.getName();
+    	String email=myuser.getEmail();
+    	String phonenum=myuser.getPhonenum();
+    	String address=myuser.getLocation();
+    	JSONObject json=new JSONObject();
+        try {
+        	JSONObject object=new JSONObject();
+        	object.put("username", name);
+        	object.put("email", email);
+        	object.put("phone", phonenum);
+        	object.put("address",address);
+        	json.put("data", object);
+        	response.getWriter().println(json.toString());
+        }catch(JSONException e) {
+        	e.printStackTrace();
+        }
+    }
+    
+    @RequestMapping(value="")//更改信息
+    public void updateMessage(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        User user=new User();
+        Integer user_id=Integer.valueOf(request.getParameter("user_id").toString());
+        user.setUserid(user_id);
+        String name=request.getParameter("username").toString();
+        String email=request.getParameter("email").toString();
+        String location=request.getParameter("address");
+        String phonenum=request.getParameter("phone");
+        List<User> userList=userService.searchUserByIdOrName(user);
+        user=userList.get(0);
+        user.setName(name);
+        user.setEmail(email);
+        user.setLocation(location);
+        user.setPhonenum(phonenum);
+        userService.updateUser(user);
+        JSONObject json=new JSONObject();
+        try {
+			json.put("status", true);
+			 response.getWriter().println(json.toString());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    @RequestMapping(value="")//更改密码
+    public void updatePsw(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    	 User user=new User();
+         Integer user_id=Integer.valueOf(request.getParameter("user_id").toString());
+         user.setUserid(user_id);
+         String oldpassword=request.getParameter("old_psw").toString();
+         String newpassword=request.getParameter("new_psw").toString();
+         String repassword=request.getParameter("new_psw2").toString();
+         List<User> userList=userService.searchUserByIdOrName(user);
+         user=userList.get(0);
+         JSONObject json=new JSONObject();
+         if(oldpassword.equals(user.getPsd())) {//密码匹配
+        		try {
+        			     user.setPsd(newpassword);
+        			     userService.updateUser(user);    
+        			     json.put("status", true);
+        	 			 response.getWriter().println(json.toString());
+        	 		} catch (JSONException e) {
+        	 			// TODO Auto-generated catch block
+        	 			e.printStackTrace();
+        	 		}
+           
+         } else {
+        	 //原密码错误
+        	 try {
+				json.put("status", "false");
+				response.getWriter().println(json.toString());
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+         }
+    }
+    
+    @RequestMapping(value="")
+    public void history(HttpServletRequest request,HttpServletResponse response) {
+    	Integer used_id=Integer.valueOf(request.getParameter("user_id"));
+    	User user=new User();
+    	user.setUserid(used_id);
+    	Log log=new Log();
+    	Booked booked=new Booked();
+    	booked.setUser(user);
+    	log.setBooked(booked);
+        List<Log> logList=logService.searchLog(log); 
+    	JSONObject js=new JSONObject();
+    	try {
+			js.put("length", logList.size());
+			JSONArray array=new JSONArray();
+			for(int i=0;i<logList.size();i++) {
+				JSONObject object = new JSONObject();
+				object.put("roomId", logList.get(i).getBooked().getMeetingroom().getId());
+				object.put("time", logList.get(i).getTimeto());
+				object.put("address", logList.get(i).getBooked().getMeetingroom().getLocate());
+				object.put("book_user", logList.get(i).getBooked().getUser().getName());
+				object.put("room_status", "finished");
+				array.put(object);
+			}
+			js.put("data", array);
+			System.out.println("test:"+js.toString());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    }
+    
+    
+}

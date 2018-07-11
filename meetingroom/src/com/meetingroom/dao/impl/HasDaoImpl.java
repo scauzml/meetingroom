@@ -44,4 +44,32 @@ public class HasDaoImpl extends HibernateDaoSupport implements HasDao{
 		return list;
 	}
 
+	@Override
+	public void save(Has has) {
+		// TODO Auto-generated method stub
+		Session session=this.getSession();
+		session.merge(has);
+		session.flush();
+		session.close();
+	}
+
+	@Override
+	public void delete(Has has) {
+		// TODO Auto-generated method stub
+		
+		Session session = this.getSession();
+		session.delete(session);
+		session.flush();
+		session.close();
+	}
+
+	@Override
+	public void update(Has has) {
+		// TODO Auto-generated method stub
+		Session session=this.getSession();
+		session.update(has);
+		session.flush();
+		session.close();
+	}
+
 }

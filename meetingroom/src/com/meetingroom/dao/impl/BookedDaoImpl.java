@@ -36,25 +36,27 @@ public class BookedDaoImpl extends HibernateDaoSupport implements BookedDao{
 	public List<Booked> searchBkedByCondition(Booked booked) {
 		Session session = this.getSession();
 		Criteria criteria = session.createCriteria(Booked.class);
-		if(booked==null)return null;
-		if(booked.getId()!=null) {
-			criteria.add(Restrictions.eq("id", booked.getId()));
+		if(booked!=null) {
+			if(booked.getId()!=null) {
+				criteria.add(Restrictions.eq("id", booked.getId()));
+			}
+			if(booked.getUser()!=null) {
+				criteria.add(Restrictions.eq("user", booked.getUser()));
+			}
+			if(booked.getMeetingroom()!=null) {
+				criteria.add(Restrictions.eq("meetingroom", booked.getMeetingroom()));
+			}
+			if(booked.getDate()!=null) {
+				criteria.add(Restrictions.eq("date", booked.getDate()));
+			}
+			if(booked.getTimeto()!=null&&!booked.getTimeto().equals("")) {
+				criteria.add(Restrictions.eq("timeto", booked.getTimeto()));
+			}
+			if(booked.getNumofparticipant()!=null&&!booked.getNumofparticipant().equals("")) {
+				criteria.add(Restrictions.eq("numofparticipant", booked.getNumofparticipant()));
+			}
 		}
-		if(booked.getUser()!=null) {
-			criteria.add(Restrictions.eq("user", booked.getUser()));
-		}
-		if(booked.getMeetingroom()!=null) {
-			criteria.add(Restrictions.eq("meetingroom", booked.getMeetingroom()));
-		}
-		if(booked.getDate()!=null) {
-			criteria.add(Restrictions.eq("date", booked.getDate()));
-		}
-		if(booked.getTimeto()!=null) {
-			criteria.add(Restrictions.eq("timeto", booked.getTimeto()));
-		}
-		if(booked.getNumofparticipant()!=null) {
-			criteria.add(Restrictions.eq("numofparticipant", booked.getNumofparticipant()));
-		}
+		
 		List<Booked> list =criteria.list();
 		session.flush();
 		session.close();

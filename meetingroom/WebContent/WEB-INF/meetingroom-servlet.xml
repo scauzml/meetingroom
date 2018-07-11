@@ -19,15 +19,23 @@
        <mvc:default-servlet-handler />
        <mvc:annotation-driven />
        <!-- 引用外部资源文件 -->
-       <mvc:resources location="/WEB-INF/img/" mapping="/img/**"/>
-        <mvc:resources location="/WEB-INF/css/" mapping="/css/**"></mvc:resources> 
-        <mvc:resources location="/WEB-INF/js/" mapping="/js/**"></mvc:resources> 
+      
+        <mvc:resources location="/WEB-INF/css/" mapping="/css/**"/> 
+         <mvc:resources location="/WEB-INF/img/" mapping="/img/**"/>
+        <mvc:resources location="/WEB-INF/js/" mapping="/js/**"/>
+        <mvc:resources location="/WEB-INF/assets/" mapping="/assets/**"/>
+        <mvc:resources location="/WEB-INF/date/" mapping="/date/**"/>
+        <mvc:resources location="/WEB-INF/date3/" mapping="/date3/**"/>
+        <mvc:resources location="/WEB-INF/fonts/" mapping="/fonts/**"/>
+        <mvc:resources location="/WEB-INF/images/" mapping="/images/**"/> 
+        
+        
         <!-- 自动扫描此包下的类作为控制器controller -->
        <context:component-scan base-package="com.meetingroom.controller"/>
        <!--视图解析器把string转换成相应的视图  -->
        <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-       <property name="prefix" value="/WEB-INF/jsp/"/>
-       <property name="suffix" value=".jsp"/>
+       <property name="prefix" value="/WEB-INF/html/"/>
+       <property name="suffix" value=".html"/>
        </bean>
         <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"> 
       <property name="caseSensitive" value="true" />

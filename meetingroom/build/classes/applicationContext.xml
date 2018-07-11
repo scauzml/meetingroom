@@ -82,24 +82,48 @@
             <tx:method name="*" propagation="NOT_SUPPORTED" read-only="true" />
         </tx:attributes>
     </tx:advice>
-    
+    <!-- dao -->
      <bean id="userDao" class="com.meetingroom.dao.impl.UserDaoImpl">
     <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="BookedDao" class="com.meetingroom.dao.impl.BookedDaoImpl">
+    <bean id="bookedDao" class="com.meetingroom.dao.impl.BookedDaoImpl">
     <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="MeetingroomDao" class="com.meetingroom.dao.impl.MeetingroomDaoImpl">
+    <bean id="meetingroomDao" class="com.meetingroom.dao.impl.MeetingroomDaoImpl">
     <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="HasDao" class="com.meetingroom.dao.impl.HasDaoImpl">
+    <bean id="hasDao" class="com.meetingroom.dao.impl.HasDaoImpl">
     <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="LogDao" class="com.meetingroom.dao.impl.LogDaoImpl">
+    <bean id="logDao" class="com.meetingroom.dao.impl.LogDaoImpl">
     <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="ParticipatedDao" class="com.meetingroom.dao.impl.ParticipatedDaoImpl">
+    <bean id="participatedDao" class="com.meetingroom.dao.impl.ParticipatedDaoImpl">
     <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-   
+    <bean id="equipmentDao" class="com.meetingroom.dao.impl.EquipmentDaoImpl">
+    <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+   <!-- Server -->
+  	<bean id="userService" class="com.meetingroom.service.Impl.UserServiceImpl">
+    <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="bookedService" class="com.meetingroom.service.Impl.BookedServiceImpl">
+    <property name="bookedDao" ref="bookedDao"/>
+    </bean>
+    <bean id="meetingroomService" class="com.meetingroom.service.Impl.MeetingroomServiceImpl">
+    <property name="meetingroomDao" ref="meetingroomDao"/>
+    </bean>
+    <bean id="hasService" class="com.meetingroom.service.Impl.HasServiceImpl">
+    <property name="hasDao" ref="hasDao"/>
+    </bean>
+    <bean id="logService" class="com.meetingroom.service.Impl.LogServiceImpl">
+    <property name="logDao" ref="logDao"/>
+    </bean>
+    <bean id="participatedService" class="com.meetingroom.service.Impl.ParticipatedServiceImpl">
+    <property name="participatedDao" ref="participatedDao"/>
+    </bean>
+     <bean id="equipmentSerivce" class="com.meetingroom.service.Impl.EquipmentServiceImpl">
+    <property name="equipmentDao" ref="equipmentDao"/>
+    </bean>
 </beans>
