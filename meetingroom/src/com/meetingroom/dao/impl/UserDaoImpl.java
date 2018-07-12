@@ -16,6 +16,7 @@ import com.meetingroom.model.User;
 
 public class UserDaoImpl extends HibernateDaoSupport implements UserDao{
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getUserList() {
 		Session session =this.getSession();

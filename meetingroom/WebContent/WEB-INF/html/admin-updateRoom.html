@@ -134,17 +134,18 @@
     window.onload=function () {
         $.ajax({
             type: "GET",
-            url: "updateLoad.action",
-            data: {"status": "login", "roomID": "roomID"},
+            url: "searchUpdateRoom",//修改页面加载时，到后台取得保存在session的id，然后后台查找到后把数据返回填充到前端
+            data: {"status": "login"},
             success: function (result) {
+            	alert("result");
                 var obj=$.parseJSON(result);
                 var data=obj;//获得数据
                 //动态生成表格
                 var tableInf=document.getElementById("form");
                 var code='  <div class="am-form-group">' +
-                    '                            <label for="room-id" class="am-u-sm-3 am-form-label">会议室ID / Room Id</label>' +
+                    '                            <label for="room-id" class="am-u-sm-3 am-form-label">会议室名字 / Room name</label>' +
                     '                            <div class="am-u-sm-9">' +
-                    '                                <input type="text" id="room-id" name="room-id" placeholder="会议室ID/ MeetingRoom ID" value="'+data.roomId+'">' +
+                    '                                <input type="text" id="room-id" name="room-id" placeholder="会议室Name/ MeetingRoom Name" value="'+data.roomId+'">' +
                     '                                <small>输入会议室ID，如4-404。</small>' +
                     '                            </div>' +
                     '                        </div>' +
@@ -196,7 +197,7 @@
     function save(){
         $.ajax({
             type:"GET",
-            url:"updateRoom.action",
+            url:"saveUpdate",
             data:{
                 "roomId":$("#room-id").val(),
                 "address":$("#room-location").val(),

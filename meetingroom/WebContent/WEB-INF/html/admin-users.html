@@ -30,7 +30,7 @@
         window.onload=function () {
             $.ajax({
                 type:"GET",
-                url:"admin-users.action",
+                url:"admin-users",
                 data:{"status":"login"},
                 success:function (result) {
                     var obj=$.parseJSON(result);

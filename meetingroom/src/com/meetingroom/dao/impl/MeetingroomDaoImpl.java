@@ -33,8 +33,10 @@ public class MeetingroomDaoImpl extends HibernateDaoSupport implements Meetingro
 		 Session session=this.getSession();
 		 Criteria criteria=session.createCriteria(Meetingroom.class);
 		 
-		 Example example=Example.create(meetingroom);
-		 criteria.add(example);
+		if (meetingroom!=null) {
+			criteria.add(Restrictions.eq("id", meetingroom.getId()));		
+
+		}
 		 List<Meetingroom> list=criteria.list();
 		 return list;
 	}

@@ -21,24 +21,17 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
-        function SetCookie(cookieName,cookieValue) {
-            var today = new Date();
-            var expire = new Date();
-            expire.setTime(today.getTime() + 36000);
-            document.cookie = cookieName + "=" + escape(cookieValue)
-                + ";expires=" + expire.toGMTString();
-        }
-
+        
         function testUpdate() {
             var no=document.getElementById('btn1').value;
             alert(no);
             $.ajax({
                 type:"GET",
-                url:"updateRoom.action",
-                data:{"id":no},
-                success:function (result) {
+                url:"updateRoomSaveId",
+                data:{"roomid":no},
+                success:function () {
                     //只是跳转，不用取数据
-                    window.location.href="admin-updateRoom.html";
+                    window.location.href="admin-updateRoom";
                 }
             });
         }
@@ -51,9 +44,9 @@
             $.ajax({
                 type:"GET",
                 url:"deleteRoom.action",
-                data:{"id":no},
+                data:{"roomid":no},
                 success:function (result) {
-                    if(result == "delete") {
+                    if(result!= null) {
                         location.reload();
                         alert("删除了");
                     }
@@ -65,8 +58,8 @@
         window.onload=function () {
             $.ajax({
                 type:"GET",
-                url:"admin-rooms.action",
-                data:{"status":"login","userID":"userID"},
+                url:"adminrooms",
+                data:{"status":"login"},
                 success:function (result) {
                     var obj=$.parseJSON(result);
                     var data=obj.data;//获得数据

@@ -16,21 +16,21 @@
     <link rel="stylesheet" href="assets/css/admin.css" >
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
-    <script>
-        function addRoom() {
-            alert("点击了");
-            $.ajax({
-                    type: "GET",//为post请求
-                    url: "addRoom.action",//这是我在后台接受数据的文件名
-                    data: $('#form1').serialize(),//将该表单序列化
-                    success: function (result) {
-                        alert("Success");
-                        window.location.href="admin-rooms.html";
-                    }
+<script>
+    function addRoom() {
+        alert("点击了");
+        $.ajax({
+                type: "GET",//为post请求
+                url: "addRoom",//这是我在后台接受数据的文件名
+                data: $('#form1').serialize(),//将该表单序列化
+                success: function (result) {
+                    alert("Success");
+                    window.location.href="admin-rooms";
                 }
-            )
-        }
-    </script>
+            }
+        )
+    }
+</script>
 </head>
 <body>
 <script>
@@ -38,15 +38,16 @@
         alert("点击了");
         $.ajax({
                 type: "GET",//为post请求
-                url: "addRoom.action",//这是我在后台接受数据的文件名
+                url: "addRoom",//这是我在后台接受数据的文件名
                 data: $('#form1').serialize(),//将该表单序列化
                 success: function (result) {
                     alert("Success");
-                    window.location.href="admin-rooms.html";
+                    window.location.href="admin-rooms";
                 }
             }
         )
     }
+    
 </script>
 <!--[if lte IE 9]>
 <p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
@@ -134,10 +135,10 @@
 
 
                         <div class="am-form-group">
-                            <label for="room-id" class="am-u-sm-3 am-form-label">会议室ID / Room Id</label>
+                            <label for="room-id" class="am-u-sm-3 am-form-label">会议室名字 / Room name</label>
                             <div class="am-u-sm-9">
-                                <input type="text" id="room-id" name="room-id" placeholder="会议室ID/ MeetingRoom ID" value="">
-                                <small>输入会议室ID，如4-404。</small>
+                                <input type="text" id="room-name" name="room-name" placeholder="会议室名字/ MeetingRoom 名字" value="">
+                                <small>输入会议室名字，如4-404。</small>
                             </div>
                         </div>
 
@@ -164,13 +165,13 @@
                             </div>
                         </div>
 
-                        <div class="am-form-group">
+                        <!-- <div class="am-form-group">
                             <label for="room-equipment" class="am-u-sm-3 am-form-label">设备</label>
                             <div class="am-u-sm-9">
                                 <input type="text" id="room-equipment" name="room-equipment" placeholder="会议室设备 / " value="">
                                 <small>输入会议室的设备。</small>
                             </div>
-                        </div>
+                        </div> -->
 
 
                         <div class="am-form-group">
@@ -202,18 +203,18 @@
 <![endif]-->
 
 <script>
-   function addRoom() {
+    function addRoom() {
         alert("点击了");
         $.ajax({
-            type: "GET",//为post请求
-            url: "addRoom.action",//这是我在后台接受数据的文件名
-            data: $('#form1').serialize(),//将该表单序列化
-            success: function (result) {
-                alert("Success");
-                window.location.href="admin-rooms.html";
+                type: "GET",//为post请求
+                url: "addRoom",//这是我在后台接受数据的文件名
+                data: $('#form1').serialize(),//将该表单序列化
+                success: function () {
+                    alert("Success");
+                    window.location.href="admin-rooms";
+                }
             }
-        }
-      )
+        )
     }
 </script>
 
@@ -229,11 +230,11 @@
         alert("点击了");
         $.ajax({
                 type: "GET",//为post请求
-                url: "addRoom.action",//这是我在后台接受数据的文件名
+                url: "addRoom",//这是我在后台接受数据的文件名
                 data: $('#form1').serialize(),//将该表单序列化
                 success: function (result) {
                     alert("Success");
-                    window.location.href="admin-rooms.html";
+                    window.location.href="admin-rooms";
                 }
             }
         )

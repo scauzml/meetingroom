@@ -103,7 +103,7 @@
 
 
                         <div class="am-form-group">
-                            <label for="user-username" class="am-u-sm-3 am-form-label">帐户名 / UserName</label>
+                            <label for="user-username" class="am-u-sm-3 am-form-label">用户名 / UserName</label>
                             <div class="am-u-sm-9">
                                 <input type="text" id="user-username" name="user-username" placeholder="帐户名 / UserName" value="">
                                 <small>输入你的帐户名字，让我们记住你。</small>
@@ -111,10 +111,10 @@
                         </div>
 
                         <div class="am-form-group">
-                            <label for="user-name" class="am-u-sm-3 am-form-label">姓名 / Name</label>
+                            <label for="user-sex" class="am-u-sm-3 am-form-label">性别 / sex</label>
                             <div class="am-u-sm-9">
-                                <input type="text" id="user-name" name="user-name" placeholder="姓名 / Name" value="">
-                                <small>输入你的名字，让我们记住你。</small>
+                                <input type="text" id="user-sex" name="user-sex" placeholder="性别 / sex" value="">
+                                <small>输入你的性别</small>
                             </div>
                         </div>
 
@@ -175,11 +175,11 @@
         alert("点击了");
         $.ajax({
                 type: "GET",//为post请求
-                url: "addUser.action",//这是我在后台接受数据的文件名
+                url: "addUser",//这是我在后台接受数据的文件名
                 data: $('#form1').serialize(),//将该表单序列化
-                success: function (result) {
+                success: function () {
                     alert("Success");
-                    window.location.href="admin-users.html";
+                    window.location.href="adminaddUser";
                 }
             }
         )
