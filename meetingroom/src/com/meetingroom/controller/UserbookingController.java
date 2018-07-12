@@ -5,7 +5,10 @@ package com.meetingroom.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +70,18 @@ public class UserbookingController {
 	@RequestMapping(value="user-booking")
 	public String userBooking() {
 		return "user-booking";
+	}
+	@RequestMapping(value="user-bookHistory")
+	public String userBookHistory() {
+		return "user-bookHistory";
+	}
+	@RequestMapping(value="user-information")
+	public String userInformation() {
+		return "user-information";
+	}
+	@RequestMapping(value="user-updatepsd")
+	public String userUpdate() {
+		return "user-updatepsd";
 	}
 	@RequestMapping(value="booking")
 	public void bookingMessage(HttpServletRequest request,HttpServletResponse response) {
@@ -178,24 +193,89 @@ public class UserbookingController {
 	
 	@RequestMapping(value="newbooking")
 	public void userBooking(HttpServletRequest request,HttpServletResponse response) {
+		List<Meetingroom> listmeetingroom=new ArrayList<>();//返回可以选择的room
 		Map<String, String[]> map = request.getParameterMap();		
-		List<Has> list=new ArrayList<>();//记录最初每一条记录，进行后续匹配，一个equipment，为一条记录
+		List<Has> haslist=new ArrayList<>();//记录最初每一条记录，进行后续匹配，一个equipment，为一条记录
+        String date="";
+        String time="";
+        
+	    List<String> floorList=new ArrayList<>();
         for (String key : map.keySet()) {
+			if(key.equals("date")) {//获取时间date
+        		for (String value : map.get(key)) {
+        			date=value;
+        		}
+        	}
+			if(key.equals("floor1")||key.equals("floor2")||key.equals("floor3")) {//获取楼层
+				for (String value : map.get(key)) {
+					floorList.add(value);
+				}
+			}
+			if(key.equals("time")) {//获取楼层
+				for (String value : map.get(key)) {
+					time=value;
+				}
+			}
         	if(key.equals("media")||key.equals("computer")||key.equals("touying")||key.equals("smal")) {
         		Equipment equipment=new Equipment();
         		equipment.setEquipment(key);
         		map.remove(key);//取得后移除
         		Has has=new Has();
         		has.setEquipment(equipment);
-        		List<Has> list2=hasService.searchHas(has);
-        		
-        	}
+        		List<Has> list2=hasService.searchHas(has);//找到需要的条目
+        		if(list2.size()>0) {
+        			for(Has has2:list2) {
+            			haslist.add(has2);
+            		} 	
+        		}
+        		      		
+        	} 
         	
-        		for (String value : map.get(key)) {
+       		/*for (String value : map.get(key)) {
                
-            }
+            }*/
         }
+		 Date date2=null;
+	    SimpleDateFormat format =new SimpleDateFormat("dddd-mm-yy");
+	    
+	      try {
+			date2=format.parse(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		List<Meetingroom> listM=new ArrayList<>();    
+        List<Booked> listB=new ArrayList<>(); //查询符合条件的会议室的预定情况
+        
+        if(haslist.size()>0) {
+        	 for(Has has:haslist) {//获取符合设备的meetingroom
+             	listM.add(has.getMeetingroom());
+             }
+        }
+        //筛选符合楼层的会议室
+        for(String floor:floorList) {
+        	for(Meetingroom m:listM) {
+        		if(!m.getFloor().equals(floor)) {
+        			listM.remove(m);
+        		}
+        	}
+        }
+       if(listM.size()>0) {//查询符合条件的会议室的预定情况
+    	   for(Meetingroom m:listM) {
+    		   Booked booked =new Booked();
+    		   booked.setMeetingroom(m);
+    		   booked.setDate(date2);
+    		   booked.setTimeto(time);
+    		   List<Booked> list=bookedService.searchBkedByCondition(booked); 
+    		   for(Booked booked2:list) {
+    			   listB.add(booked2);//
+    		   }
+    		   
+    	   }
+       }
 
+        
         /*if(key.equals("floor1")||key.equals("floor2")||key.equals("floor3")) {
 		
     	}

@@ -64,16 +64,16 @@
                 <li class="admin-parent">
                     <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 个人预订 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1">
-                        <li><a href="/user-booking.html" class="am-cf"><span class="am-icon-check"></span>预订中<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
-                        <li><a href="user-bookHistory.html"><span class="am-icon-calendar"></span> 预订历史</a></li>
+                        <li><a href="user-booking" class="am-cf"><span class="am-icon-check"></span>预订中<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
+                        <li><a href="user-bookHistory"><span class="am-icon-calendar"></span> 预订历史</a></li>
                     </ul>
                 </li>
 
                 <li class="admin-parent">
                     <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 个人信息 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
-                        <li><a href="/user-information.html" class="am-cf"><span class="am-icon-table"></span>修改个人信息 <span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
-                        <li><a href="/user-updatepsd.html"><span class="am-icon-calendar"></span> 修改密码</a></li>
+                        <li><a href="user-information" class="am-cf"><span class="am-icon-table"></span>修改个人信息 <span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
+                        <li><a href="user-updatepsd"><span class="am-icon-calendar"></span> 修改密码</a></li>
 
                     </ul>
                 </li>
@@ -173,29 +173,8 @@
                 </form>
 
                 <div id="con">
-                    <table id="roomtable"class="am-table am-table-striped am-table-hover table-main" style="display:none">
-                        <thead>
-                        <tr>
-                            <th class="table-check"><input type="checkbox" /></th><th class="table-id">ID</th><th class="table-title">位置</th><th class="table-type">楼层</th><th class="table-author am-hide-sm-only">容纳人数</th><th class="table-date am-hide-sm-only">设备</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="checkbox" name="isSelect"/></td>
-                                <td>ID</td>
-                                <td><a href="#">TEST</a></td>
-                                <td>TEST</td>
-                                <td class="am-hide-sm-only">TEST</td>
-                                <td class="am-hide-sm-only">TEST</td>
-                                <td>
-                                    <div class="am-btn-toolbar">
-                                        <div class="am-btn-group am-btn-group-xs">
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table >
+                   
+                  
                 </div>
             </div>
 
@@ -232,20 +211,6 @@
 </script>
 
 
-<script>
-    $('#btn1').click(function(){
-        $.ajax({
-            type:"GET",//为post请求
-            url:"userBook.action",//这是我在后台接受数据的文件名
-            data:$('#form1').serialize(),//将该表单序列化
-            async:false,//设置成true，这标志着在请求开始后，其他代码依然能够执行。如果把这个选项设置成false，这意味着所有的请求都不再是异步的了，这也会导致浏览器被锁死
-            success:function(){//请求成功之后的操作
-            }
-        });
-        document.getElementById("roomtable").style.display="table";
-        return false;
-    })
-</script>
 <!--[if (gte IE 9)|!(IE)]><!-->
 <script src="assets/js/jquery.min.js"></script>
 <!--<![endif]-->

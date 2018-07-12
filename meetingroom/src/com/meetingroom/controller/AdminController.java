@@ -93,7 +93,7 @@ public class AdminController {
 	@RequestMapping(value="adminusers.do")
 	public String adminUsers() {
 		
-		return "adminusers";
+		return "admin-users";
 	}
 	
 	@RequestMapping(value="adminaddRoom.do")
