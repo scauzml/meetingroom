@@ -117,7 +117,7 @@
                                 <div class="card-body">
                                     <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2" name="media"><label class="form-check-label" for="formCheck-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多媒体室</label></div>
                                     <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-4" name="computer"><label class="form-check-label" for="formCheck-4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电脑室</label></div>
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-3" name="touying"><label class="form-check-label" for="formCheck-3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;舞蹈室</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-3" name="touying"><label class="form-check-label" for="formCheck-3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;投影室</label></div>
                                     <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1" name="small"><label class="form-check-label" for="formCheck-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小型办公室</label></div>
                                 </div>
                             </div>
@@ -130,12 +130,12 @@
                             <div class="collapse item-2" role="tabpanel" data-parent="#accordion-1">
                                 <div class="card-body">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-5">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-5" name="floor1">
                                         <label class="form-check-label" for="formCheck-5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1楼</label>
                                     </div>
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-6" name="floor1"><label class="form-check-label" for="formCheck-6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2楼</label></div>
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-7" name="floor2"><label class="form-check-label" for="formCheck-7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3楼</label></div>
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-8" name="floor3"><label class="form-check-label" for="formCheck-8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4楼</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-6" name="floor2"><label class="form-check-label" for="formCheck-6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2楼</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-7" name="floor3"><label class="form-check-label" for="formCheck-7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3楼</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-8" name="floor4"><label class="form-check-label" for="formCheck-8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4楼</label></div>
                                 </div>
                             </div>
                         </div>
@@ -224,8 +224,10 @@
             data:$('#form1').serialize(),//将该表单序列化
             async:false,//设置成true，这标志着在请求开始后，其他代码依然能够执行。如果把这个选项设置成false，这意味着所有的请求都不再是异步的了，这也会导致浏览器被锁死
             success:function(result){//请求成功之后的操作
+            /* 	alert("return"); */
                 var obj=$.parseJSON(result);
                 var length=obj.len;
+                var length1=obj.len1;
                 var data=obj.data;//获得数据
 
                 //var myTable= document.getElementById("roomtable");
@@ -235,7 +237,7 @@
                 var code='    <table id="roomtable"class="am-table am-table-striped am-table-hover table-main" style="display:table">';
                 code+='<thead>' +
                     '                        <tr>' +
-                    '                            <th class="table-check"><input type="checkbox" /></th><th class="table-id">ID</th><th class="table-title">位置</th><th class="table-type">楼层</th><th class="table-author am-hide-sm-only">容纳人数</th><th class="table-date am-hide-sm-only">设备</th>' +
+                    '                            <th class="table-check"><input type="checkbox" /></th><th class="table-id">ID</th><th colspan="2" class="table-id">会议室名字</th><th class="table-title">位置</th><th class="table-type">楼层</th><th class="table-author am-hide-sm-only">容纳人数</th><th class="table-date am-hide-sm-only">设备</th>' +
                     '                        </tr>' +
                     '                        </thead>' +
                     '                        <tbody>';
@@ -244,7 +246,8 @@
                         code +=' <tr>' +
                             '                                <td><input type="checkbox" name="isSelect" value="'+data[i].ID+'" /></td>' +
                             '                                <td>'+data[i].ID+'</td>' +
-                            '                                <td>'+data[i].location+'</a></td>' +
+                             '                                <td colspan="2">'+data[i].roomname+'</td>' +
+                            '                                <td>'+data[i].location+'</td>' +
                             '                                <td>'+data[i].floor+'</td>' +
                             '                                <td class="am-hide-sm-only">'+data[i].limit+'</td>' +
                             '                                <td class="am-hide-sm-only">'+data[i].equipment+'</td>' +
@@ -256,11 +259,14 @@
                             '                                </td>' +
                             '                            </tr>';
                 }
+                
                 tableInf.innerHTML=code+"</tbody>" +
                     "                    </table >"+'<input  id="btn2" type="submit" value="提交" onclick="subbmit()">';
-
+            
+                
             }
-        });
+       
+        });return false;
     })
 
 </script>
@@ -285,9 +291,9 @@
 
        $.ajax({
            type:"GET",//为post请求
-           url:"addBook.action",//这是我在后台接受数据的文件名
+           url:"addBook",//这是我在后台接受数据的文件名
            contentType: 'application/json;charset=utf-8',
-           data: {"number":number,"date":$("#datepicker").val(),"time":document.getElementById('test').options[document.getElementById('test').selectedIndex].value,"user":"001"},
+           data: {"number":number,"date":$("#datepicker").val(),"time":document.getElementById('test').options[document.getElementById('test').selectedIndex].value},
            //data:{"number":number,"date":date,"time":time,"user":"001"},//将该表单序列化
            async:false,//设置成true，这标志着在请求开始后，其他代码依然能够执行。如果把这个选项设置成false，这意味着所有的请求都不再是异步的了，这也会导致浏览器被锁死
            success:function(result) {//请求成功之后的操作

@@ -22,7 +22,6 @@ import com.meetingroom.service.BookedService;
 import com.meetingroom.service.LogService;
 import com.meetingroom.service.UserService;
 
-
 public class UserMessageController{
 
 	@Autowired

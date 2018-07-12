@@ -23,19 +23,20 @@ public class HasDaoImpl extends HibernateDaoSupport implements HasDao{
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Has> searchHas(Has has) {
 		Session session=this.getSession();
 		Criteria criteria=session.createCriteria(Has.class);
-		if(has==null)return null;
+		
 		if (has.getId()!=null) {
 			criteria.add(Restrictions.eq("id", has.getId()));
 		}
 		if (has.getEquipment()!=null) {
-			criteria.add(Restrictions.eq("equipment", has.getEquipment()));
+			criteria.add(Restrictions.eq("equipment.id", has.getEquipment().getId()));
 		}
 		if (has.getMeetingroom()!=null) {
-			criteria.add(Restrictions.eq("equipment", has.getMeetingroom()));
+			criteria.add(Restrictions.eq("meetingroom.id", has.getMeetingroom().getId()));
 		}
 		
 		List<Has> list=criteria.list();
