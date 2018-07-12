@@ -102,7 +102,7 @@
                 <div class="am-u-sm-12 am-u-md-6">
                     <div class="am-btn-toolbar">
                         <div class="am-btn-group am-btn-group-xs">
-                            <button type="button" class="am-btn am-btn-default" > <span class="am-icon-plus"></span> <a href="user-Book.html">新增预订</a></button>
+                            <button type="button" class="am-btn am-btn-default" > <span class="am-icon-plus"></span> <a href="userBook">新增预订</a></button>
                         </div>
                     </div>
                 </div>
@@ -160,8 +160,8 @@
 window.onload=function () {
     $.ajax({
         type:"GET",
-        url:"user-booking.action",
-        data:{"status":"login","userID":"userID"},
+        url:"booking",
+        data:{"status":"login"},
         success:function (result) {
             var obj=$.parseJSON(result);
             var data=obj.data;//获得数据
@@ -177,7 +177,7 @@ window.onload=function () {
 
             for(var i=0;i< obj.length;i++){
                 code +=' <tr>' +
-                    '                                <td><input type="checkbox" name="isSelect" value="'+data[i].roomId+'" /></td>' +
+                    '                                <td><input type="checkbox" name="isSelect" value="'+data[i].booked_id+'" /></td>' +
                     '                                <td>'+data[i].roomId+'</td>' +
                     '                                <td>'+data[i].time+'</td>' +
                     '                                <td>'+data[i].address+'</td>' +
@@ -186,7 +186,7 @@ window.onload=function () {
                     '                                <td>' +
                     '                                    <div class="am-btn-toolbar">' +
                     '                                        <div class="am-btn-group am-btn-group-xs">' +
-                    '<button class="am-btn am-btn-default am-btn-xs am-text-secondary" id="btn1" value="testDelete" onclick="testdelete()"><span class="am-icon-trash-o"></span> 删除</button>' +
+                    '<button class="am-btn am-btn-default am-btn-xs am-text-secondary" id="btn1" value="'+data[i].booked_id+'" onclick="testdelete()"><span class="am-icon-trash-o"></span> 删除</button>' +
                     '                                        </div>' +
                     '                                    </div>' +
                     '                                </td>' +
@@ -217,15 +217,16 @@ window.onload=function () {
     function testdelete(){
         alert("点击了");
         var no=document.getElementById('btn1').value;
+        alert(no);
         $.ajax({
             type:"GET",
-            url:"delete.action",
-            data:{"id":no},
-            success:function (result) {
-                if(result == "delete") {
+            url:"deleteBook",
+            data:{"bookedid":no},
+            success:function () {
+                
                     location.reload();
                     alert("返回了");
-                }
+                
             }
         });
     }

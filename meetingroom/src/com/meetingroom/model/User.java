@@ -16,7 +16,7 @@ public class User {
 	private String picture;
 	
 	private Set<Booked> bookedset=new HashSet<>();
-	private Set<Participated> participated=new HashSet<>();
+	
 	
 	public User(Integer userid, String psd,String name, String email, String userType, String sex, String location, String phonenum,
 			String picture) {
@@ -36,12 +36,7 @@ public class User {
 	}
 	
 	
-	public Set<Participated> getParticipated() {
-		return participated;
-	}
-	public void setParticipated(Set<Participated> participated) {
-		this.participated = participated;
-	}
+	
 	public Set<Booked> getBookedset() {
 		return bookedset;
 	}

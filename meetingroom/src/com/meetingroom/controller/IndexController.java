@@ -19,8 +19,7 @@ public class IndexController {
 		if(request.getSession().getAttribute("status").equals("login")) {
 			StringBuilder sBuilder=new StringBuilder();
 			sBuilder.append("login,");
-			sBuilder.append(LoginController.user.getUserid()+",");
-			sBuilder.append(LoginController.user.getName());
+			
 			return sBuilder.toString();
 		} else {
 			return "anon";

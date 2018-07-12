@@ -8,11 +8,11 @@
             <column name="ID" />
             <generator class="identity" />
         </id>
-        <many-to-one name="booked" class="com.meetingroom.model.Booked" fetch="join">
-            <column name="BOOKED_ID" />
-        </many-to-one>
-        <many-to-one name="user" class="com.meetingroom.model.User" fetch="join">
-            <column name="USER_ID" />
-        </many-to-one>
+         <property name="bookid" type="java.lang.Integer">
+            <column name="booked_id" />
+        </property>
+        <property name="userid" type="java.lang.Integer">
+            <column name="user_id" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -29,4 +29,16 @@ public class ParticipatedServiceImpl implements ParticipatedService  {
 		return participatedDao.searchParticipated(participated);
 	}
 
+	@Override
+	public void delete(Participated participated) {
+		// TODO Auto-generated method stub
+		participatedDao.delete(participated);
+	}
+
+	@Override
+	public void save(Participated participated) {
+		// TODO Auto-generated method stub
+		participatedDao.save(participated);
+	}
+
 }

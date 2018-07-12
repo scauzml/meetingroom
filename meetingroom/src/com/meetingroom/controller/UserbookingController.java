@@ -44,96 +44,78 @@ public class UserbookingController {
 	public void setBookedService(BookedService bookedService) {
 		this.bookedService = bookedService;
 	}
-	@Autowired
+	
+	
 	ParticipatedService participatedService;
 	@Autowired
 	public void setParticipatedService(ParticipatedService participatedService) {
 		this.participatedService=participatedService;
 	}
 	
+	@RequestMapping(value="user-booking")
+	public String userBooking() {
+		return "user-booking";
+	}
 	@RequestMapping(value="booking")
 	public void bookingMessage(HttpServletRequest request,HttpServletResponse response) {
-		if(!request.getSession().getAttribute("status").equals("login"))return;//登陆状态判断
-		String userid=request.getParameter("userID");//获取id
+		
+		User user1 =(User)request.getSession().getAttribute("user");//获取id
+		Integer userid=user1.getUserid();
 		if(userid.equals("")||userid==null)return;
 		User user=new User();
-		user.setUserid(1);
-		List<User> list= userService.searchUserByIdOrName(user);//根据ID查询当前登陆用户
-		List<Booked> bookedlist=null;
-		if(list.size()==1) {//根据当前用户，查询信息
-			Booked booked=new Booked();
-			booked.setUser(list.get(0));
-			bookedlist=bookedService.searchBkedByCondition(booked);
+		user.setUserid(userid);
+		Booked booked=new Booked();
+		booked.setUser(user);
+		//根据ID查询当前登陆用户
+		List<Booked> bookedlist=bookedService.searchBkedByCondition(booked);
+		if(bookedlist.size()>0) {//根据当前用户，查询信息
+			try {
+				org.json.JSONObject js =new org.json.JSONObject();
+				js.put("length", bookedlist.size());
+				js.put("status", "login");
+				org.json.JSONArray array=new org.json.JSONArray();
+				for(int i=0;i<bookedlist.size();i++) {
+					JSONObject jsonObject=new JSONObject();
+					jsonObject.put("booked_id", bookedlist.get(i).getId());
+					jsonObject.put("roomId", bookedlist.get(i).getMeetingroom().getId());
+					jsonObject.put("time", bookedlist.get(i).getTimeto());
+					jsonObject.put("address", bookedlist.get(i).getMeetingroom().getLocate());
+					jsonObject.put("book_user", bookedlist.get(i).getUser().getUserid());
+					jsonObject.put("participant", bookedlist.get(i).getId());
+					array.put(jsonObject);
+				}
+				js.put("data", array);
+				System.out.println("bookmessage:"+js.toString());
+				PrintWriter writer=null;
+				writer=response.getWriter();
+				writer.print(js.toString());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}	
+			
 		}
-		try {
-			org.json.JSONObject js =new org.json.JSONObject();
-			js.put("length", bookedlist.size());
-			js.put("status", "login");
-			org.json.JSONArray array=new org.json.JSONArray();
-			for(int i=0;i<bookedlist.size();i++) {
-				JSONObject jsonObject=new JSONObject();
-				jsonObject.put("booked_id", bookedlist.get(i).getId());
-				jsonObject.put("roomId", bookedlist.get(i).getMeetingroom().getId());
-				jsonObject.put("time", bookedlist.get(i).getTimeto());
-				jsonObject.put("address", bookedlist.get(i).getMeetingroom().getLocate());
-				jsonObject.put("book_user", bookedlist.get(i).getUser().getUserid());
-				jsonObject.put("participant", bookedlist.get(i).getId());
-				array.put(jsonObject);
-			}
-			js.put("data", array);
-			System.out.println("bookmessage:"+js.toString());
-			PrintWriter writer=null;
-			writer=response.getWriter();
-			writer.print(js.toString());
-		} catch (JSONException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
 	}
 	@RequestMapping(value="deleteBook")
 	public void deleteBook(HttpServletRequest request,HttpServletResponse response) {
 		if(!request.getSession().getAttribute("status").equals("login"))return;
-		String userid=request.getParameter("userID");
-		if(userid.equals("")||userid==null)return;
-		User user1=new User();
-		user1.setUserid(Integer.valueOf(userid));
-		userService.deleteUser(user1);
-		//返回删除后的数据
-		User user=new User();
-		user.setUserid(1);
-		List<User> list= userService.searchUserByIdOrName(user);
-		List<Booked> bookedlist=null;
-		if(list.size()==1) {
-			Booked booked=new Booked();
-			booked.setUser(list.get(0));
-			bookedlist=bookedService.searchBkedByCondition(booked);
-		}
-		try {
-			org.json.JSONObject js =new org.json.JSONObject();
-			js.put("length", bookedlist.size());
-			js.put("status", "login");
-			org.json.JSONArray array=new org.json.JSONArray();
-			for(int i=0;i<bookedlist.size();i++) {
-				JSONObject jsonObject=new JSONObject();
-				jsonObject.put("booked_id", bookedlist.get(i).getId());
-				jsonObject.put("roomId", bookedlist.get(i).getMeetingroom().getId());
-				jsonObject.put("time", bookedlist.get(i).getTimeto());
-				jsonObject.put("address", bookedlist.get(i).getMeetingroom().getLocate());
-				jsonObject.put("book_user", bookedlist.get(i).getUser().getUserid());
-				jsonObject.put("participant", bookedlist.get(i).getId());
-				array.put(jsonObject);
-			}
-			js.put("data", array);
-			System.out.println("bookmessage:"+js.toString());
-			PrintWriter writer=null;
-			writer=response.getWriter();
-			writer.print(js.toString());
-		} catch (JSONException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
+		String bookedid=request.getParameter("bookedid");	
+		System.out.println("bookedid "+bookedid);
+		Participated participated=new Participated();				
+		participated.setBookid(Integer.parseInt(bookedid));				
+		List<Participated> list=participatedService.searchParticipated(participated);
+		System.out.println(list.get(0).getBookid());
+		participatedService.delete(list.get(0));
+		Booked booked=new Booked();
+		booked.setId(Integer.parseInt(bookedid));
+		bookedService.deleteBKed(booked);
+		//bookedService.deleteBKed(booked);
+		//返回删除后的数据	
+		
+		
 	}
 	@RequestMapping(value="participant")
 	public void getParticipant(HttpServletRequest request,HttpServletResponse response) {
@@ -144,7 +126,7 @@ public class UserbookingController {
 	    Participated p=new Participated();
 	    Booked b=new Booked();
 	    b.setId(1);
-	    p.setBooked(b);
+	  /*  p.setBooked(b);*/
 		List<Participated> list= participatedService.searchParticipated(p);
 		try {
 			js.put("length", list.size());
@@ -153,13 +135,13 @@ public class UserbookingController {
 		}
 		for(int i=0;i<list.size();i++) {
 			int id=list.get(i).getId();
-			try {
+			/*try {
 				JSONObject json=new JSONObject();
 			json.put("name", list.get(i).getUser().getName());
 			array.put(json);
 			} catch (JSONException e) {
 				e.printStackTrace();
-			}
+			}*/
 		}
 		try {
 			js.put("data",array);
@@ -175,5 +157,15 @@ public class UserbookingController {
 			e.printStackTrace();
 		}
 		writer.print(js.toString());
+	}
+	
+	@RequestMapping(value="userBook")
+	public String userBook() {
+		return "user-Book";
+	}
+	
+	@RequestMapping(value="user-Book")
+	public void userBooking(HttpServletRequest request,HttpServletResponse response) {
+		
 	}
 }

@@ -28,7 +28,7 @@ import org.json.*;
 public class LoginController {
 
 	public  String status="anon";
-	public static User user=new User();
+	
 	@Autowired
 	UserService userService;
 	@Autowired
@@ -45,44 +45,54 @@ public class LoginController {
 		//session.setAttribute("status", status);		
 		return "login";
 	}
-	@RequestMapping(value="signup")
-	public String signUp(HttpServletRequest request,HttpServletResponse response,HttpSession session) {
-		if(!status.equals("login"))return "index";
-		status="anon";
-		LoginController.user=null;
-		return "index";
-	}
+	
 	@RequestMapping(value="loginup")
-	public String loginup(HttpServletRequest request,HttpServletResponse response,HttpSession session) {
-		if(status.equals("login"))return "index";
+	public void loginup(HttpServletRequest request,HttpServletResponse response,HttpSession session) {
+		/*if(status.equals("login"))return "index";*/
 		User user=new User();
 		PrintWriter writer=null;
 		
 		String id = request.getParameter("userid");
 		System.out.println("test:"+id);
 		String psd=request.getParameter("psd");
-		System.out.println("test:"+psd);
+		System.out.println("psd "+psd);
 		int userid =0;
 		try {
 			userid=Integer.valueOf(id);
 		} catch (NumberFormatException e) {
-			System.out.println("账户名输入有误，请勿输入字母");
+			org.json.JSONObject object2 =new org.json.JSONObject();
+			try {
+				object2.put("status", "anon");
+				object2.put("username", "anon");
+				object2.put("userID", "anon");
+				object2.put("type", "anon");
+				writer=response.getWriter();
+				writer.print(object2.toString());
+			} catch (JSONException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 		}
-		if(userid==0)return "Login"; 
+		
 		user.setUserid(userid);
 		user.setPsd(psd);
 		List<User> list = userService.searchUser(user);
 		if(list.size()>0) {
 //			JSONArray jsonArray=new JSONArray();
 			try {
-				LoginController.user=user;
+				
+				request.getSession().setAttribute("user", list.get(0));//保存用户
+				request.getSession().setAttribute("status","login");	
+				
 				org.json.JSONObject object2 =new org.json.JSONObject();
 				object2.put("status", "login");
 				object2.put("username", list.get(0).getName());
 				object2.put("userID", list.get(0).getUserid());
-				System.out.println("org.json::str:"+object2.toString());
+				object2.put("type", list.get(0).getUserType());
 				writer=response.getWriter();
-				writer.print(object2);
+				writer.print(object2.toString());
+				
 			} catch (NestableRuntimeException e) {
 				e.printStackTrace();
 			} catch (JSONException e) {
@@ -90,18 +100,28 @@ public class LoginController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			session.setAttribute("status", "login");
-			status="login";
-			switch (list.get(0).getUserType()) {
-			case "0":
-				return "Login";
-			case "1":
-				return "redirect:booking";
-			default:
-				break;
+						
+		}else {
+			
+			try {
+				org.json.JSONObject object2 =new org.json.JSONObject();
+				object2.put("status", "anon");
+				object2.put("username", "anon");
+				object2.put("userID", "anon");
+				object2.put("type", "anon");
+				writer=response.getWriter();
+				writer.print(object2.toString());
+			} catch (JSONException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
 		}
-		return "Login";
+		
+	}
+	@RequestMapping(value="user-index")
+	public String get() {
+		return "user-index";
 	}
 	
 }

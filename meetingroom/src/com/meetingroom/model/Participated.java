@@ -3,38 +3,38 @@ package com.meetingroom.model;
 public class Participated {
 
 	private Integer id;
-	private Booked booked;
-	private User user;
-	
-	public Participated(Integer id, Booked booked, User user) {
+	private Integer bookid;
+	private Integer userid;
+	public Participated(Integer id, Integer bookid, Integer userid) {
 		super();
 		this.id = id;
-		this.booked = booked;
-		this.user = user;
+		this.bookid = bookid;
+		this.userid = userid;
 	}
 	
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public Participated() {
 		super();
 	}
-	public Booked getBooked() {
-		return booked;
+
+	public Integer getId() {
+		return id;
 	}
-	public void setBooked(Booked booked) {
-		this.booked = booked;
+	public void setId(Integer id) {
+		this.id = id;
 	}
-	public User getUser() {
-		return user;
+	public Integer getBookid() {
+		return bookid;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setBookid(Integer bookid) {
+		this.bookid = bookid;
 	}
+	public Integer getUserid() {
+		return userid;
+	}
+	public void setUserid(Integer userid) {
+		this.userid = userid;
+	}
+	
+	
 	
 }

@@ -55,5 +55,6 @@
 .myapp-login .myapp-login-bg .am-checkbox .myapp-login-treaty {-webkit-transform: scale(1);}
 .myapp-login .myapp-login-bg fieldset {padding: 0; padding-top: 40px;}
 .myapp-login .myapp-login-bg input#doc-vld-name { background: none; border-radius: 30px; border: 1px solid #9194a7; color: #feffff; text-indent: 10px; line-height: 26px; font-size: 12px;}
+.myapp-login .myapp-login-bg input#doc-vld-psd { background: none; border-radius: 30px; border: 1px solid #9194a7; color: #feffff; text-indent: 10px; line-height: 26px; font-size: 12px;}
 .myapp-login .myapp-login-bg .myapp-login-button { width: 100%; border-radius: 30px; background: #1161ee; border: none; font-size: 12px; line-height: 26px; }
 .myapp-login .myapp-login-bg legend { margin-top: 130px;border: none; border-top: 1px solid #9194a7; line-height: 50px;font-size: 14px;  color: #9194a7; text-align: center;}

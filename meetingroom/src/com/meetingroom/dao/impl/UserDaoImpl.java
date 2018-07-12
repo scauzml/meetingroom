@@ -39,8 +39,7 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao{
 		} catch (Exception e) {
 			System.err.println("slkjadfklsajlfkd");// TODO: handle exception
 		}
-		 System.out.println("username:"+user.getUserid());
-		 System.out.println("psd:"+user.getPsd());
+		 
 		 list =criteria.list();
 		 session.close();
 		 return list;

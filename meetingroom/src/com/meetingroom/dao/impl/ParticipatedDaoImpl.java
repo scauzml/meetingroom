@@ -27,11 +27,37 @@ public class ParticipatedDaoImpl extends HibernateDaoSupport implements Particip
 		Session session=this.getSession();
 		Criteria criteria=session.createCriteria(Participated.class);
 		if(participated!=null) {
-			if(participated.getBooked().getId()!=null) {
-				criteria.add(Restrictions.eq("booked.id",participated.getBooked().getId()));
+			if(participated.getBookid()!=null) {
+				criteria.add(Restrictions.eq("bookid",participated.getBookid()));
+			}
+			if(participated.getUserid()!=null) {
+				criteria.add(Restrictions.eq("userid",participated.getUserid()));
 			}
 		}
 		return criteria.list();
+	}
+
+	@Override
+	public void delete(Participated participated) {
+		// TODO Auto-generated method stub
+		
+		Session session=this.getSession();		
+		session.delete(participated);
+		session.flush();
+		
+		System.out.println("a "+participated.getBookid());
+		
+		
+	}
+
+	@Override
+	public void save(Participated participated) {
+		// TODO Auto-generated method stub
+		Session session=this.getSession();
+		session.save(participated);
+		session.flush();
+		session.close();
+		
 	}
 
 }

@@ -31,17 +31,17 @@
 	      </ul>
 	      <div class="am-tabs-bd">
 	          <div data-tab-panel-0 class="am-tab-panel am-active">
-				<form action="" class="am-form">
+				<form  class="am-form">
 					<fieldset>
 						<div class="am-form-group">
 						<label for="doc-vld-name">用户账号</label>
-						<input type="text" id="doc-vld-name" minlength="3" placeholder="User ID" class="am-form-field" required/>
+						<input type="text" id="doc-vld-name" minlength="1" placeholder="User ID" class="am-form-field" required/>
 						</div>
 						<div class="am-form-group">
 						<label for="doc-vld-name">用户密码</label>
-						<input type="password" id="doc-vld-name" minlength="3" placeholder="User Password" class="am-form-field" required/>
+						<input type="password" id="doc-vld-psd" minlength="1" placeholder="User Password" class="am-form-field" required/>
 						</div>
-						<button class="myapp-login-button am-btn am-btn-secondary" type="submit">登录</button>
+						<button class="myapp-login-button am-btn am-btn-secondary" type="submit" id="btn1">登录</button>
 					</fieldset>
 					<legend>忘记密码</legend>
 				</form>
@@ -89,5 +89,43 @@
 <![endif]-->
 <script src="js/amazeui.min.js"></script>
 <script src="js/app.js"></script>
+<script>
+
+    $('#btn1').click(function(){
+        /* alert("正在成功");
+        alert($("#doc-vld-name").val());
+        alert($("#doc-vld-psd").val()); */
+       $.ajax({
+            type:"GET",//为post请求
+            url:"loginup",//这是我在后台接受数据的文件名
+            data:{
+                "userid":$("#doc-vld-name").val(),
+				"psd":$("#doc-vld-psd").val()
+            },//将该表单序列化
+            async:false,//设置成true，这标志着在请求开始后，其他代码依然能够执行。如果把这个选项设置成false，这意味着所有的请求都不再是异步的了，这也会导致浏览器被锁死
+            success:function(result){//请求成功之后的操作jffr
+				var obj=$.parseJSON(result);
+				/* alert(obj.status); */
+				var statu=obj.status;
+				if(statu == "login"){
+                    alert("成功");
+                    if(obj.type ==1){
+                    window.location.href="admin-rooms";
+                    }else if(obj.type==0){
+                        window.location.href="user-index";
+					}
+
+				}else if(statu=="anon"){
+                    alert("帐户名或密码错误");
+                    window.location.href="login";
+				}
+
+            }
+        });
+        //document.getElementById("roomtable").style.display="table";
+        return false;
+    })
+		</script>
+
 </body>
 </html>
