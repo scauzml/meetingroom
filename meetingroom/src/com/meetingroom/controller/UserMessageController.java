@@ -22,7 +22,8 @@ import com.meetingroom.service.BookedService;
 import com.meetingroom.service.LogService;
 import com.meetingroom.service.UserService;
 
-public class UserMessageController {
+
+public class UserMessageController{
 
 	@Autowired
     UserService userService;
@@ -43,14 +44,20 @@ public class UserMessageController {
 		this.bookedService = bookedService;
 	}
 
-	@RequestMapping(value="")//个人信息
+	@RequestMapping(value="user-information")//个人信息
     public void getMessage(HttpServletRequest request,HttpServletResponse response) throws IOException {
-    	User user=new User();
-    	Integer user_id=Integer.valueOf(request.getParameter("user_id").toString());
+		
+    	User user=(User)request.getSession().getAttribute("user");
+    	if(user == null) {
+    		response.getWriter().println("{\"status\":\"anon\"}" );
+    	}
+    	
+    	Integer user_id=Integer.valueOf(user.getUserid());
     	user.setUserid(user_id);
     	List<User> userList=userService.searchUserByIdOrName(user);
     	User myuser=userList.get(0);
     	String name=myuser.getName();
+    	String sex=myuser.getSex();
     	String email=myuser.getEmail();
     	String phonenum=myuser.getPhonenum();
     	String address=myuser.getLocation();
@@ -60,6 +67,7 @@ public class UserMessageController {
         	object.put("username", name);
         	object.put("email", email);
         	object.put("phone", phonenum);
+        	object.put("sex", sex);
         	object.put("address",address);
         	json.put("data", object);
         	response.getWriter().println(json.toString());
@@ -68,12 +76,16 @@ public class UserMessageController {
         }
     }
     
-    @RequestMapping(value="")//更改信息
+    @RequestMapping(value="user-updateinformation")//更改信息
     public void updateMessage(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        User user=new User();
-        Integer user_id=Integer.valueOf(request.getParameter("user_id").toString());
+    	User user=(User)request.getSession().getAttribute("user");
+    	if(user == null) {
+    		response.getWriter().println("{\"status\":\"anon\"}" );
+    	}
+    	Integer user_id=Integer.valueOf(user.getUserid());
         user.setUserid(user_id);
         String name=request.getParameter("username").toString();
+        String sex=request.getParameter("sex").toString();
         String email=request.getParameter("email").toString();
         String location=request.getParameter("address");
         String phonenum=request.getParameter("phone");
@@ -84,24 +96,27 @@ public class UserMessageController {
         user.setLocation(location);
         user.setPhonenum(phonenum);
         userService.updateUser(user);
-        JSONObject json=new JSONObject();
+        request.getSession().setAttribute("user",user);
+        
         try {
-			json.put("status", true);
-			 response.getWriter().println(json.toString());
-		} catch (JSONException e) {
+			 response.getWriter().println("Success");
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
     
-    @RequestMapping(value="")//更改密码
+    @RequestMapping(value="user-updatePSD")//更改密码
     public void updatePsw(HttpServletRequest request,HttpServletResponse response) throws IOException {
-    	 User user=new User();
-         Integer user_id=Integer.valueOf(request.getParameter("user_id").toString());
+    	User user=(User)request.getSession().getAttribute("user");
+    	if(user == null) {
+    		response.getWriter().println("{\"status\":\"anon\"}" );
+    	}
+    	Integer user_id=Integer.valueOf(user.getUserid());
          user.setUserid(user_id);
-         String oldpassword=request.getParameter("old_psw").toString();
-         String newpassword=request.getParameter("new_psw").toString();
-         String repassword=request.getParameter("new_psw2").toString();
+         String oldpassword=request.getParameter("oldPassword").toString();
+         String newpassword=request.getParameter("newPassword").toString();
+      
          List<User> userList=userService.searchUserByIdOrName(user);
          user=userList.get(0);
          JSONObject json=new JSONObject();
@@ -110,7 +125,7 @@ public class UserMessageController {
         			     user.setPsd(newpassword);
         			     userService.updateUser(user);    
         			     json.put("status", true);
-        	 			 response.getWriter().println(json.toString());
+        	 			 response.getWriter().println("Success");
         	 		} catch (JSONException e) {
         	 			// TODO Auto-generated catch block
         	 			e.printStackTrace();
@@ -119,7 +134,7 @@ public class UserMessageController {
          } else {
         	 //原密码错误
         	 try {
-				json.put("status", "false");
+				json.put("status", "anon");
 				response.getWriter().println(json.toString());
 
 			} catch (JSONException e) {
@@ -129,11 +144,19 @@ public class UserMessageController {
          }
     }
     
-    @RequestMapping(value="")
+    @RequestMapping(value="user-history")
     public void history(HttpServletRequest request,HttpServletResponse response) {
-    	Integer used_id=Integer.valueOf(request.getParameter("user_id"));
-    	User user=new User();
-    	user.setUserid(used_id);
+    	User user=(User)request.getSession().getAttribute("user");
+    	if(user == null) {
+    		try {
+				response.getWriter().println("{\"status\":\"anon\"}" );
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	Integer user_id=Integer.valueOf(user.getUserid());
+    	user.setUserid(user_id);
     	Log log=new Log();
     	Booked booked=new Booked();
     	booked.setUser(user);
@@ -149,12 +172,16 @@ public class UserMessageController {
 				object.put("time", logList.get(i).getTimeto());
 				object.put("address", logList.get(i).getBooked().getMeetingroom().getLocate());
 				object.put("book_user", logList.get(i).getBooked().getUser().getName());
-				object.put("room_status", "finished");
+				object.put("status", "finished");
 				array.put(object);
 			}
 			js.put("data", array);
 			System.out.println("test:"+js.toString());
+			response.getWriter().println(js.toString());
 		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

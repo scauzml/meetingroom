@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>WEB</title>
-    <meta name="description" content="这是主页/jsp的">
+    <title>会议室预订系统</title>
+    <meta name="description" content="这是会议室预订系统的HTML">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
@@ -131,7 +131,7 @@
 
         <footer class="admin-content-footer">
             <hr>
-            <p class="am-padding-left">© 2014 AllMobilize, Inc. Licensed under MIT license.</p>
+            <p class="am-padding-left">© 2018 AllMobilize, Inc. Licensed under MIT license.</p>
         </footer>
 
     </div>
@@ -158,8 +158,8 @@
     window.onload=function () {
         $.ajax({
             type: "GET",
-            url: "user-booking.action",
-            data: {"status": "login", "userID": "userID"},
+            url: "user-history",
+            data: {"status": "login"},
             success: function (result) {
                 var obj=$.parseJSON(result);
                 var data=obj.data;//获得数据

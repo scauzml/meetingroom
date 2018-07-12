@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>CMS WEB</title>
+    <title>会议室管理系统</title>
     <meta name="description" content="这是主页/jsp的">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -51,7 +51,7 @@
     <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
         <div class="am-offcanvas-bar admin-offcanvas-bar">
             <ul class="am-list admin-sidebar-list">
-                <li><a href="#"><span class="am-icon-home"></span> 首页</a></li>
+                <li><a href="user-index.html"><span class="am-icon-home"></span> 首页</a></li>
                 <li class="admin-parent">
                     <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 个人预订 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1">
@@ -139,11 +139,14 @@
     window.onload=function () {
         $.ajax({
             type: "GET",
-            url: "user-information.action",
-            data: {"status": "login", "userID": "userID"},
+            url: "user-information",
+            data: {"status": "login"},
             success: function (result) {
                 var obj=$.parseJSON(result);
-                var data=obj.information;//获得数据
+                var data=obj.information;//获得数
+				if(obj.status == "anon"){
+				window.location.href="login.html";	
+				}else{
                 //动态生成表格
                 var tableInf=document.getElementById("form");
                 var code=' <div class="am-form-group">' +
@@ -155,10 +158,10 @@
                     '                        </div>' +
                     '' +
                     '                        <div class="am-form-group">' +
-                    '                            <label for="user-name" class="am-u-sm-3 am-form-label">姓名 / Name</label>' +
+                    '                            <label for="user-name" class="am-u-sm-3 am-form-label">性别 / Sex</label>' +
                     '                            <div class="am-u-sm-9">' +
-                    '                                <input type="text" id="user-name" name="user-name" placeholder="性别 / Name" value="'+data.realname+'">' +
-                    '                                <small>输入你的名字，让我们记住你。</small>' +
+                    '                                <input type="text" id="user-name" name="user-name" placeholder="性别 / Sex" value="'+data.realname+'">' +
+                    '                                <small>输入你的性别。</small>' +
                     '                            </div>' +
                     '                        </div>' +
                     '' +
@@ -193,6 +196,7 @@
                     '                            </div>' +
                     '                        </div>';
                 tableInf.innerHTML=code;
+				}
             }
         });
     }
@@ -202,8 +206,8 @@
         var no=document.getElementById('btn1').value;
         $.ajax({
             type:"GET",
-            url:"update.action",
-            data:{"status":"login","user_id":"user_id","information":{"username":$("#user-username").val(),"realname":$("#user-name").val(),"email":$("#user-email").val(),"phone":$("#user-phone").val(),"address":$("#user-address").val()}},
+            url:"user-updateinformation",
+            data:{"information":{"username":$("#user-username").val(),"sex":$("#user-name").val(),"email":$("#user-email").val(),"phone":$("#user-phone").val(),"address":$("#user-address").val()}},
             success:function (result) {
                 if(result == "Success") {
                     location.reload();

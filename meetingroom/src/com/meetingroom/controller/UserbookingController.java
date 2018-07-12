@@ -5,7 +5,9 @@ package com.meetingroom.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,9 +24,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
 import com.meetingroom.model.Booked;
+import com.meetingroom.model.Equipment;
+import com.meetingroom.model.Has;
+import com.meetingroom.model.Meetingroom;
 import com.meetingroom.model.Participated;
 import com.meetingroom.model.User;
 import com.meetingroom.service.BookedService;
+import com.meetingroom.service.HasService;
 import com.meetingroom.service.ParticipatedService;
 import com.meetingroom.service.UserService;
 import com.sun.scenario.effect.Blend;
@@ -37,6 +43,12 @@ public class UserbookingController {
 	@Autowired
 	public void setUserDao(UserService userService) {
 		this.userService = userService;
+	}
+	
+	HasService hasService;	
+	@Autowired
+	public void setHasService(HasService hasService) {
+		this.hasService = hasService;
 	}
 	@Autowired
 	BookedService bookedService;
@@ -164,8 +176,35 @@ public class UserbookingController {
 		return "user-Book";
 	}
 	
-	@RequestMapping(value="user-Book")
+	@RequestMapping(value="newbooking")
 	public void userBooking(HttpServletRequest request,HttpServletResponse response) {
+		Map<String, String[]> map = request.getParameterMap();		
+		List<Has> list=new ArrayList<>();//记录最初每一条记录，进行后续匹配，一个equipment，为一条记录
+        for (String key : map.keySet()) {
+        	if(key.equals("media")||key.equals("computer")||key.equals("touying")||key.equals("smal")) {
+        		Equipment equipment=new Equipment();
+        		equipment.setEquipment(key);
+        		map.remove(key);//取得后移除
+        		Has has=new Has();
+        		has.setEquipment(equipment);
+        		List<Has> list2=hasService.searchHas(has);
+        		
+        	}
+        	
+        		for (String value : map.get(key)) {
+               
+            }
+        }
+
+        /*if(key.equals("floor1")||key.equals("floor2")||key.equals("floor3")) {
+		
+    	}
+       if(key.equals("date")) {
+    		
+    	}
+       if(key.equals("time")) {
+    	   
+       }*/
 		
 	}
 }
