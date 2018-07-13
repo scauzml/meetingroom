@@ -22,8 +22,10 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         
-        function testUpdate() {
-            var no=document.getElementById('btn1').value;
+        function testUpdate(e) {
+        	alert("点击了");
+            //var no=document.getElementById('btn2').value;
+            var no=$(e).val();
             alert(no);
             $.ajax({
                 type:"GET",

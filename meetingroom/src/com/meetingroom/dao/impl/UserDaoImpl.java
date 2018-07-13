@@ -69,7 +69,7 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao{
 	@Override
 	public void updateUser(User user) {
 		Session session=this.getSession();
-		session.update(user);
+		session.merge(user);
 		session.flush();
 		session.close();
 	}

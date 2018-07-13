@@ -1,7 +1,9 @@
 package com.meetingroom.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,16 +14,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fasterxml.classmate.util.ResolvedTypeCache.Key;
 import com.meetingroom.model.Booked;
 import com.meetingroom.model.Log;
 import com.meetingroom.model.User;
 import com.meetingroom.service.BookedService;
 import com.meetingroom.service.LogService;
 import com.meetingroom.service.UserService;
-
+@Controller
 public class UserMessageController{
 
 	@Autowired
@@ -43,15 +47,17 @@ public class UserMessageController{
 		this.bookedService = bookedService;
 	}
 
-	@RequestMapping(value="user-information")//个人信息
+	@RequestMapping(value="usergetinformation")//个人信息
     public void getMessage(HttpServletRequest request,HttpServletResponse response) throws IOException {
 		
     	User user=(User)request.getSession().getAttribute("user");
     	if(user == null) {
+    		System.out.println("usser"+user.getUserid());
     		response.getWriter().println("{\"status\":\"anon\"}" );
     	}
     	
     	Integer user_id=Integer.valueOf(user.getUserid());
+    
     	user.setUserid(user_id);
     	List<User> userList=userService.searchUserByIdOrName(user);
     	User myuser=userList.get(0);
@@ -70,6 +76,7 @@ public class UserMessageController{
         	object.put("address",address);
         	json.put("data", object);
         	response.getWriter().println(json.toString());
+        	System.out.println("个人"+json.toString());
         }catch(JSONException e) {
         	e.printStackTrace();
         }
@@ -108,18 +115,30 @@ public class UserMessageController{
     @RequestMapping(value="user-updatePSD")//更改密码
     public void updatePsw(HttpServletRequest request,HttpServletResponse response) throws IOException {
     	User user=(User)request.getSession().getAttribute("user");
+    	System.out.println("user "+user);
     	if(user == null) {
     		response.getWriter().println("{\"status\":\"anon\"}" );
     	}
-    	Integer user_id=Integer.valueOf(user.getUserid());
-         user.setUserid(user_id);
-         String oldpassword=request.getParameter("oldPassword").toString();
-         String newpassword=request.getParameter("newPassword").toString();
-      
-         List<User> userList=userService.searchUserByIdOrName(user);
-         user=userList.get(0);
+    	
+        
+    	String oldpassword=null;
+    	String newpassword=null;
+    	Map<String, String[]> map=request.getParameterMap();
+    	for(String key : map.keySet()) {
+    		for(String value :map.get(key)) {
+    			if(key.equals("oldPassword"))
+    				oldpassword=value;
+    			if(key.equals("newPassword")) {
+    				newpassword=value;
+    			}
+    		}
+    	}
+        System.out.println("oldpassword "+oldpassword);
+         System.out.println("nwepassword "+newpassword);
+        
          JSONObject json=new JSONObject();
          if(oldpassword.equals(user.getPsd())) {//密码匹配
+        	 System.out.println("user "+user.getPsd());
         		try {
         			     user.setPsd(newpassword);
         			     userService.updateUser(user);    

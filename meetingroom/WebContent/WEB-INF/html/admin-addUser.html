@@ -121,7 +121,7 @@
                         <div class="am-form-group">
                             <label for="user-email" class="am-u-sm-3 am-form-label">电子邮件 / Email</label>
                             <div class="am-u-sm-9">
-                                <input type="email" id="user-email" name="user-email" placeholder="输入你的电子邮件 / Email" value="">
+                                <input type="email" id="user-email" onblur="isEmail()" name="user-email" placeholder="输入你的电子邮件 / Email" value="">
                                 <small>邮箱你懂得...</small>
                             </div>
                         </div>
@@ -129,7 +129,7 @@
                         <div class="am-form-group">
                             <label for="user-phone" class="am-u-sm-3 am-form-label">电话 / Telephone</label>
                             <div class="am-u-sm-9">
-                                <input type="tel" id="user-phone" name="user-phone" placeholder="输入你的电话号码 / Telephone" value="">
+                                <input type="tel" id="user-phone" onblur="isPhone()" name="user-phone" placeholder="输入你的电话号码 / Telephone" value="">
                             </div>
                         </div>
 
@@ -185,6 +185,21 @@
                 }
             }
         )
+    }
+</script>
+<script>
+function isEmail() {
+        var reg = /\w+[@]{1}\w+[.]\w+/;
+        if (!reg.test($("#user-email").val())){
+            alert("请输入正确的email！");
+        }
+    }
+
+    function isPhone(){
+        var reg = /^(1)([0-9]{10})?$/;
+        if (!reg.test($("#user-phone").val())){
+            alert("手机格式！");
+        }
     }
 </script>
 

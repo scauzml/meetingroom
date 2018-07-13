@@ -103,7 +103,7 @@
                 </div>
 
                 <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
-                    <form class="am-form am-form-horizontal" method="get" id="form">
+                    <form class="am-form am-form-horizontal"  id="form">
 
 
 
@@ -137,16 +137,21 @@
 <script src="assets/js/app.js"></script>
 <script>
     window.onload=function () {
+    	//alert("进入个人资料页");
         $.ajax({
             type: "GET",
-            url: "user-information",
+            url: "usergetinformation",
+            contentType:"application/json",
+            dataType:"json",
+            timeout:50000,
             data: {"status": "login"},
             success: function (result) {
-                var obj=$.parseJSON(result);
-                var data=obj.information;//获得数
-				if(obj.status == "anon"){
-				window.location.href="login.html";	
-				}else{
+            	 alert("re "+result);
+                //var obj=$.parseJSON(result);
+                //alert("obj "+obj);
+                var data=result.data;//获得
+               
+                alert(data);
                 //动态生成表格
                 var tableInf=document.getElementById("form");
                 var code=' <div class="am-form-group">' +
@@ -160,7 +165,7 @@
                     '                        <div class="am-form-group">' +
                     '                            <label for="user-name" class="am-u-sm-3 am-form-label">性别 / Sex</label>' +
                     '                            <div class="am-u-sm-9">' +
-                    '                                <input type="text" id="user-name" name="user-name" placeholder="性别 / Sex" value="'+data.realname+'">' +
+                    '                                <input type="text" id="user-name" name="user-name" placeholder="性别 / Sex" value="'+data.sex+'">' +
                     '                                <small>输入你的性别。</small>' +
                     '                            </div>' +
                     '                        </div>' +
@@ -168,7 +173,7 @@
                     '                        <div class="am-form-group">' +
                     '                            <label for="user-email" class="am-u-sm-3 am-form-label">电子邮件 / Email</label>' +
                     '                            <div class="am-u-sm-9">' +
-                    '                                <input type="email" id="user-email" name="user-email" placeholder="输入你的电子邮件 / Email" value="'+data.email+'">' +
+                    '                                <input type="email" id="user-email" onblur="isEmail()" name="user-email" placeholder="输入你的电子邮件 / Email" value="'+data.email+'">' +
                     '                                <small>邮箱你懂得...</small>' +
                     '                            </div>' +
                     '                        </div>' +
@@ -176,7 +181,7 @@
                     '                        <div class="am-form-group">' +
                     '                            <label for="user-phone" class="am-u-sm-3 am-form-label">电话 / Telephone</label>' +
                     '                            <div class="am-u-sm-9">' +
-                    '                                <input type="tel" id="user-phone" name="user-phone" placeholder="输入你的电话号码 / Telephone" value="'+data.phone+'">' +
+                    '                                <input type="tel" id="user-phone" onblur="isPhone()" name="user-phone" placeholder="输入你的电话号码 / Telephone" value="'+data.phone+'">' +
                     '                            </div>' +
                     '                        </div>' +
                     '' +
@@ -196,25 +201,50 @@
                     '                            </div>' +
                     '                        </div>';
                 tableInf.innerHTML=code;
-				}
+				
+            },error:function(XMLHttpRequest,textStatus,errorThrown){
+            	alert("status"+XMLHttpRequest.status);
+            	alert("readyState"+XMLHttpRequest.readyState);
+            	alert(textStatus);
             }
         });
     }
 </script>
 <script>
     function testUpdate(){
-        var no=document.getElementById('btn1').value;
+    	alert("点击了");
+        //var no=document.getElementById('btn1').value;
+        //alert(no);
+        alert($("#user-username").val());
         $.ajax({
             type:"GET",
             url:"user-updateinformation",
-            data:{"information":{"username":$("#user-username").val(),"sex":$("#user-name").val(),"email":$("#user-email").val(),"phone":$("#user-phone").val(),"address":$("#user-address").val()}},
+            data:{"username":$("#user-username").val(),"sex":$("#user-name").val(),"email":$("#user-email").val(),"phone":$("#user-phone").val(),"address":$("#user-address").val()},
             success:function (result) {
-                if(result == "Success") {
+    				
                     location.reload();
-                }
+                
             }
         });
     }
+    
+    
 </script>
+<script>
+function isEmail() {
+        var reg = /\w+[@]{1}\w+[.]\w+/;
+        if (!reg.test($("#user-email").val())){
+            alert("请输入正确的email！");
+        }
+    }
+
+    function isPhone(){
+        var reg = /^(1)([0-9]{10})?$/;
+        if (!reg.test($("#user-phone").val())){
+            alert("手机格式！");
+        }
+    }
+</script>
+
 </body>
 </html>
