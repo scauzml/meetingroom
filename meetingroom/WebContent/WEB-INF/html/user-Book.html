@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html class="no-js fixed-layout">
 <head>
     <meta charset="utf-8">
@@ -167,14 +167,14 @@
                         </div>
                         <input  id="btn1" type="submit" value="提交">
                     </div>
-                <script src="assets/js/jquery.min.js"></script>
-                <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+                    <script src="assets/js/jquery.min.js"></script>
+                    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
                 </form>
 
                 <div id="con">
-                   
-                  
+
+
                 </div>
             </div>
 
@@ -224,7 +224,7 @@
             data:$('#form1').serialize(),//将该表单序列化
             async:false,//设置成true，这标志着在请求开始后，其他代码依然能够执行。如果把这个选项设置成false，这意味着所有的请求都不再是异步的了，这也会导致浏览器被锁死
             success:function(result){//请求成功之后的操作
-            /* 	alert("return"); */
+                /* 	alert("return"); */
                 var obj=$.parseJSON(result);
                 var length=obj.len;
                 var length1=obj.len1;
@@ -235,37 +235,36 @@
                 //动态生成表格
                 var tableInf=document.getElementById("con");
                 var code='    <table id="roomtable"class="am-table am-table-striped am-table-hover table-main" style="display:table">';
-                code+='<thead>' +
-                    '                        <tr>' +
-                    '                            <th class="table-check"><input type="checkbox" /></th><th class="table-id">ID</th><th colspan="2" class="table-id">会议室名字</th><th class="table-title">位置</th><th class="table-type">楼层</th><th class="table-author am-hide-sm-only">容纳人数</th><th class="table-date am-hide-sm-only">设备</th>' +
-                    '                        </tr>' +
-                    '                        </thead>' +
-                    '                        <tbody>';
+                code+='<thead>' + '                        <tr>' + '                            <th class="table-check"><input type="checkbox" /></th><th class="table-id">ID</th><th colspan="2" class="table-id">会议室名字</th><th class="table-title">位置</th><th class="table-type">楼层</th><th class="table-author am-hide-sm-only">容纳人数</th><th class="table-date am-hide-sm-only">设备</th>' + '                        </tr>' + '                        </thead>' + '                        <tbody>';
                 for(var i=0;i< length;i++){
-
-                        code +=' <tr>' +
-                            '                                <td><input type="checkbox" name="isSelect" value="'+data[i].ID+'" /></td>' +
-                            '                                <td>'+data[i].ID+'</td>' +
-                             '                                <td colspan="2">'+data[i].roomname+'</td>' +
-                            '                                <td>'+data[i].location+'</td>' +
-                            '                                <td>'+data[i].floor+'</td>' +
-                            '                                <td class="am-hide-sm-only">'+data[i].limit+'</td>' +
-                            '                                <td class="am-hide-sm-only">'+data[i].equipment+'</td>' +
-                            '                                <td>' +
-                            '                                    <div class="am-btn-toolbar">' +
-                            '                                        <div class="am-btn-group am-btn-group-xs">' +
-                            '                                        </div>' +
-                            '                                    </div>' +
-                            '                                </td>' +
-                            '                            </tr>';
+                    code +=' <tr>' + '                                <td><input type="checkbox" name="isSelect" value="'+data[i].ID+'" /></td>' + '                                <td>'+data[i].ID+'</td>' + '                                <td colspan="2">'+data[i].roomname+'</td>' + '                                <td>'+data[i].location+'</td>' + '                                <td>'+data[i].floor+'</td>' + '                                <td class="am-hide-sm-only">'+data[i].limit+'</td>' + '                                <td class="am-hide-sm-only">'+data[i].equipment+'</td>' + '                                <td>' + '                                    <div class="am-btn-toolbar">' + '                                        <div class="am-btn-group am-btn-group-xs">' + '                                        </div>' + '                                    </div>' + '                                </td>' + '                            </tr>';
                 }
-                
-                tableInf.innerHTML=code+"</tbody>" +
-                    "                    </table >"+'<input  id="btn2" type="submit" value="提交" onclick="subbmit()">';
-            
-                
+                tableInf.innerHTML=code+"</tbody>" + "                    </table >"+'<input  id="btn2" type="submit" value="提交" onclick="subbmit()">';
+
+
+                var code2='</br></br><div class="box">' +
+                    '    <span style="font-size:22px">选择要发送邮件的员工</span>' +
+                    '    <div class="content">';
+
+                var len2=obj.length2;
+                alert(len2);
+                var data2=obj.data2;
+                var code2='</br></br><table id="roomtable"class="am-table am-table-striped am-table-hover table-main" style="display:table">';
+                code2+='<thead><tr><th class="table-check"><input type="checkbox" /></th><th class="table-id">ID</th><th class="table-title">用户名</th><th class="table-type">邮箱</th></tr>' +
+                    '</thead>' +
+                    '<tbody>';
+
+                for(var i=0;i< len2;i++){
+                    code2 +=' <tr>' +
+                        '<td><input type="checkbox" name="message" value="'+data2[i].userid+'" /></td>' +
+                        '<td>'+data2[i].userid+'</td><td>'+data2[i].username+'</a></td>' +
+                        '<td></td>' +
+                        '<td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"></div></div></td></tr>';
+                }
+                tableInf.innerHTML+=code2+'</tbody></table >' +
+                    '</div><br><input id="btn2" type="button" value="提交" onclick="subbmit()"></div>';
             }
-       
+
         });return false;
     })
 
@@ -273,38 +272,39 @@
 
 <script>
     function subbmit() {
-       //var options=$("#test option:selected");
-        //var time=options.text();
+        text = $("input:checkbox[name='message']:checked").map(function(index,elem) {
+            return $(elem).val();
+        }).get().join(',');
+        alert(text);
         var obj=document.getElementById('test');
         var index=obj.selectedIndex; //序号，取当前选中选项的序号
         var time = obj.options[index].value;
-       var number='';
-       var date=document.getElementById("datepicker");
-       $('input:checkbox[name=isSelect]:checked').each(function(k){
-           if(k == 0){
-               number = $(this).val();
-           }else{
-               number=0;
-               alert("选择一个");
-           }
-       });
-
-       $.ajax({
-           type:"GET",//为post请求
-           url:"addBook",//这是我在后台接受数据的文件名
-           contentType: 'application/json;charset=utf-8',
-           data: {"number":number,"date":$("#datepicker").val(),"time":document.getElementById('test').options[document.getElementById('test').selectedIndex].value},
-           //data:{"number":number,"date":date,"time":time,"user":"001"},//将该表单序列化
-           async:false,//设置成true，这标志着在请求开始后，其他代码依然能够执行。如果把这个选项设置成false，这意味着所有的请求都不再是异步的了，这也会导致浏览器被锁死
-           success:function(result) {//请求成功之后的操作
-               if(result == "Success"){
-                   //根据字串返回页面
-                   alert("Success");
-                   window.location.href="user-booking.html";
-               }
-           }
-       });
-   }
+        var number='';
+        var date=document.getElementById("datepicker");
+        $('input:checkbox[name=isSelect]:checked').each(function(k){
+            if(k == 0){
+                number = $(this).val();
+            }else{
+                number=0;
+                alert("选择一个");
+            }
+        });
+        $.ajax({
+            type:"GET",//为post请求
+            url:"addBook",//这是我在后台接受数据的文件名
+            contentType: 'application/json;charset=utf-8',
+            data: {"roomid":number,"date":$("#datepicker").val(),"time":document.getElementById('test').options[document.getElementById('test').selectedIndex].value,"participants":text},
+            //data:{"number":number,"date":date,"time":time,"user":"001"},//将该表单序列化
+            async:false,//设置成true，这标志着在请求开始后，其他代码依然能够执行。如果把这个选项设置成false，这意味着所有的请求都不再是异步的了，这也会导致浏览器被锁死
+            success:function(result) {//请求成功之后的操作
+                if(result == "Success"){
+                    //根据字串返回页面
+                    alert("Success");
+                    window.location.href="user-booking.html";
+                }
+            }
+        });
+    }
 
 </script>
 

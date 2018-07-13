@@ -399,9 +399,37 @@ public class UserbookingController {
 	@RequestMapping(value="addBook")
 	public void addBook(HttpServletRequest request,HttpServletResponse response) {
 		
-		String roomId=request.getParameter("number");
-		String date=request.getParameter("number");
-		String time=request.getParameter("number");
+		String roomId=null;
+		String date=null;
+		String time=null;
+		String[] useridList=null;
+		Map<String, String[]> map = request.getParameterMap();
+		for (String key : map.keySet()) {
+			if(key.equals("roomid")) {
+				for (String value : map.get(key)) {
+	        		roomId=value;
+				}
+			}
+			if(key.equals("date")) {
+				for (String value : map.get(key)) {
+	        		date=value;
+				}
+			}
+			if(key.equals("time")) {
+				for (String value : map.get(key)) {
+	        		time=value;
+				}
+			}
+			
+			if(key.equals("participants")) {
+				for (String value : map.get(key)) {
+	        		useridList=value.split(",");
+	        		System.out.println("useridlist "+useridList.length);
+				}
+			}
+			
+		}
+		
 		 Date date2=null;
 		    SimpleDateFormat format =new SimpleDateFormat("dddd-mm-yy");
 		    
@@ -422,6 +450,7 @@ public class UserbookingController {
 		      booked.setNumofparticipant(meetingroom.getPeoplelimit());
 		      booked.setTimeto(time);
 		      bookedService.saveBKed(booked);
+		      
 		      
 	}
 	@RequestMapping(value = "sendEmail")
@@ -522,5 +551,7 @@ public class UserbookingController {
 			e.printStackTrace();
 		}
 	}
+	
+	
 
 }
