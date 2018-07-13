@@ -131,13 +131,19 @@ public class UserbookingController {
 				js.put("status", "login");
 				org.json.JSONArray array=new org.json.JSONArray();
 				for(int i=0;i<bookedlist.size();i++) {
+					String now = new SimpleDateFormat("yyyy-MM-dd").format(bookedlist.get(i).getDate());
+					now=now+" "+bookedlist.get(i).getTimeto();
+					Participated participated=new Participated();
+					participated.setBookid(bookedlist.get(i).getId());
+					int count=participatedService.Count(participated);
+					System.out.println("count "+count);
 					JSONObject jsonObject=new JSONObject();
 					jsonObject.put("booked_id", bookedlist.get(i).getId());
-					jsonObject.put("roomId", bookedlist.get(i).getMeetingroom().getId());
-					jsonObject.put("time", bookedlist.get(i).getTimeto());
+					jsonObject.put("roomId", bookedlist.get(i).getMeetingroom().getRoomname());
+					jsonObject.put("time",now);
 					jsonObject.put("address", bookedlist.get(i).getMeetingroom().getLocate());
-					jsonObject.put("book_user", bookedlist.get(i).getUser().getUserid());
-					jsonObject.put("participant", bookedlist.get(i).getId());
+					jsonObject.put("book_user", bookedlist.get(i).getUser().getName());
+					jsonObject.put("participant", count);
 					array.put(jsonObject);
 				}
 				js.put("data", array);
@@ -163,8 +169,13 @@ public class UserbookingController {
 		Participated participated=new Participated();				
 		participated.setBookid(Integer.parseInt(bookedid));				
 		List<Participated> list=participatedService.searchParticipated(participated);
-		System.out.println(list.get(0).getBookid());
-		participatedService.delete(list.get(0));
+		System.out.println(list.size());
+		if(list.size()>0) {
+			for(int i=0;i<list.size();i++) {
+				participatedService.delete(list.get(i));
+			}
+		}
+		
 		Booked booked=new Booked();
 		booked.setId(Integer.parseInt(bookedid));
 		bookedService.deleteBKed(booked);
@@ -374,8 +385,9 @@ public class UserbookingController {
     	       for(int i=0;i<listuser.size();i++) {
     	    	   
     	    	   JSONObject json=new JSONObject();
-    	    	   json.put("ID", listuser.get(i).getUserid());
-    	    	   json.put("username", listuser.get(i).getName());   	    	    
+    	    	   json.put("userid", listuser.get(i).getUserid());
+    	    	   json.put("username", listuser.get(i).getName());   	  
+    	    	   json.put("email", listuser.get(i).getEmail());
     	    	   jsonArray.put(json);
     	      	    
     	       }
@@ -408,6 +420,7 @@ public class UserbookingController {
 			if(key.equals("roomid")) {
 				for (String value : map.get(key)) {
 	        		roomId=value;
+	        		System.out.println("roomid "+roomId);
 				}
 			}
 			if(key.equals("date")) {
@@ -424,6 +437,7 @@ public class UserbookingController {
 			if(key.equals("participants")) {
 				for (String value : map.get(key)) {
 	        		useridList=value.split(",");
+	        		System.out.println("useridlist "+useridList.toString());
 	        		System.out.println("useridlist "+useridList.length);
 				}
 			}
@@ -431,32 +445,57 @@ public class UserbookingController {
 		}
 		
 		 Date date2=null;
-		    SimpleDateFormat format =new SimpleDateFormat("dddd-mm-yy");
+		 System.out.println("date "+date);
+		    SimpleDateFormat format =new SimpleDateFormat("yyyy-MM-dd");
 		    
 		      try {
 				date2=format.parse(date);
-				
+				 System.out.println("date2 "+date2.toGMTString());
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		      User user=(User) request.getSession().getAttribute("user");
+		      
 		      Meetingroom meetingroom=new Meetingroom();
 		      meetingroom.setId(Integer.parseInt(roomId));
 		      List<Meetingroom> listM=meetingroomService.searchMRByCondition(meetingroom);
 		      Meetingroom meetingroom1=listM.get(0);
 		      Booked booked=new Booked();
+		      booked.setUser(user);
 		      booked.setDate(date2);
 		      booked.setMeetingroom(meetingroom1);
-		      booked.setNumofparticipant(meetingroom.getPeoplelimit());
+		      booked.setNumofparticipant(meetingroom1.getPeoplelimit());
 		      booked.setTimeto(time);
 		      bookedService.saveBKed(booked);
 		      
+		     		     
+		      Integer bookid=booked.getId();
+		      for(int i=0;i<useridList.length;i++) {
+		    	   System.out.println("participated ");
+		    	  Participated participated=new Participated();
+		    	  participated.setBookid(bookid);
+		    	  participated.setUserid(Integer.parseInt(useridList[i]));
+		    	  participatedService.save(participated);
+		    	  
+		      }
+		      getEmails(booked.getId());
+		      JSONObject jsonObject=new JSONObject();
+			  try {
+				jsonObject.put("status", "success");
+				response.getWriter().println(jsonObject.toString());
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 		      
 	}
-	@RequestMapping(value = "sendEmail")
-	public void getEmails(HttpServletRequest request, HttpServletResponse response) {
-		String bookedid = request.getParameter("bookedid");
-		int bookid = Integer.valueOf(bookedid);
+	/*@RequestMapping(value = "sendEmail")*/
+	public void getEmails(Integer bookid) {
+		
 		Booked booked = new Booked();
 		booked.setId(bookid);
 		Participated par = new Participated();
@@ -467,7 +506,7 @@ public class UserbookingController {
 		 List<String> list=new LinkedList<String>();
 //		 Map<String,String> map=new HashMap<String,String>();
 		 QQEmailAPI qqEmailAPI=new QQEmailAPI();
-			qqEmailAPI.init("1025655613@qq.com","gjadawishosbbcbd");//发件人邮箱及授权码
+			qqEmailAPI.init("763829015@qq.com","mlfrqagshnttbejc");//发件人邮箱及授权码
 		for(int i=0;i<participateds.size();i++) {
 			Integer userid=participateds.get(i).getUserid();
 			User user=new User();
@@ -489,69 +528,49 @@ public class UserbookingController {
 //        qqEmailAPI.sendToMany(list,"","管理员： <br/>" +
 //                "会议室预订成功，您即将参与会议<br/>");
 	}
-	@RequestMapping(value = "expExcel")
-	public void expExcel(HttpServletRequest request, HttpServletResponse response) {
-		// 导出到桌面
-		// FileSystemView fsv = FileSystemView.getFileSystemView();
-		// String desktop = fsv.getHomeDirectory().getPath();
-		// String filePath = desktop + "/template.xls";
-		// File file = new File(filePath);
-		// File file=new File("");
-		// OutputStream output = null;
-		// try {
-		// output = new FileOutputStream(file);
-		// } catch (FileNotFoundException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// }
-		HSSFWorkbook workbook = new HSSFWorkbook();
-		HSSFSheet sheet = workbook.createSheet();
-		HSSFRow row = sheet.createRow(sheet.getLastRowNum());
-		row.createCell(0).setCellValue("num");
-		row.createCell(1).setCellValue("userid");
-		row.createCell(2).setCellValue("roomid");
-		row.createCell(3).setCellValue("timeto");
-		row.createCell(4).setCellValue("number of members");
-		List<Booked> bookeds = bookedService.getAllBKed();
-		List<Log> logs = logService.getAllLog();
-		if (bookeds.size() == 0 && logs.size() == 0)
-			return;
-		int num = 1;
-		for (int i = 0; i < bookeds.size(); i++) {// 写入未完成的预订
-			HSSFRow r = sheet.createRow(sheet.getLastRowNum() + 1);
-			r.createCell(0).setCellValue(num);
-			r.createCell(1).setCellValue(bookeds.get(i).getUser().getUserid());
-			r.createCell(2).setCellValue(bookeds.get(i).getMeetingroom().getId());
-			r.createCell(3).setCellValue(bookeds.get(i).getTimeto());
-			r.createCell(4).setCellValue(bookeds.get(i).getNumofparticipant());
-			num++;
+
+	@RequestMapping(value="watchp")
+	public void watchp(HttpServletRequest request, HttpServletResponse response) {
+		
+		String bookid=request.getParameter("booked_id");
+		System.out.println("wbookid "+bookid);
+		Participated participated=new Participated();
+		participated.setBookid(Integer.parseInt(bookid));
+		List<Participated> listP=participatedService.searchParticipated(participated);
+		System.out.println("listP "+listP.size());
+		List<User> listuser=new ArrayList<>();
+		for(int i=0;i<listP.size();i++) {
+			Integer userid=listP.get(i).getUserid();
+			User user=new User();
+			user.setUserid(userid);
+			List<User> list=userService.searchUser(user);
+			System.out.println("listP "+listP.size());
+			listuser.add(list.get(0));
 		}
-		for (int i = 0; i < logs.size(); i++) {// 写入已完成的预订
-			HSSFRow r = sheet.createRow(sheet.getLastRowNum() + 1);
-			r.createCell(0).setCellValue(num);
-			r.createCell(1).setCellValue(logs.get(i).getBooked().getUser().getUserid());
-			r.createCell(2).setCellValue(logs.get(i).getBooked().getMeetingroom().getId());
-			r.createCell(3).setCellValue(logs.get(i).getTimeto());
-			r.createCell(4).setCellValue(logs.get(i).getBooked().getNumofparticipant());
-			num++;
-		}
-		OutputStream outputStream = null;
-		try {
-			outputStream = response.getOutputStream();
-			response.reset();
-			response.setContentType("application/vnd.ms-excel");
-			// response.setHeader("Content-disposition",
-			// "attachment;filename=template.xls");
-			response.setHeader("Content-Disposition", "attachment; filename=\"" + "template.xls" + "\"");// 这里设置一下让浏览器弹出下载提示框，而不是直接在浏览器中打开
-			workbook.write(outputStream);
-			outputStream.flush();
-			outputStream.close();
-			System.out.println("success");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		 JSONObject object=new JSONObject(); 
+		  try {
+	    		object.put("length",listuser.size() );
+	    		 org.json.JSONArray jsonArray=new org.json.JSONArray();
+	    	       for(int i=0;i<listuser.size();i++) {
+	    	    	   System.out.println("参会人员: "+listuser.size());   
+	    	    	   JSONObject json=new JSONObject();
+	    	    	   json.put("username", listuser.get(i).getName());
+	    	    	   json.put("useremail", listuser.get(i).getEmail());	    	    	    
+	    	    	   jsonArray.put(json);	    	      	    
+	    	       }
+	    	       object.put("data", jsonArray);
+	    	      
+	    	       try {
+	    			response.getWriter().println(object.toString());
+	    		} catch (IOException e) {
+	    			// TODO Auto-generated catch block
+	    			e.printStackTrace();
+	    		}
+	    	} catch (JSONException e) {
+	    		// TODO Auto-generated catch block
+	    		e.printStackTrace();
+	    	}
+		
 	}
-	
-	
 
 }

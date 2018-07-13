@@ -46,7 +46,8 @@ public class UserMessageController{
     public void setBookedService(BookedService bookedService) {
 		this.bookedService = bookedService;
 	}
-
+    
+    
 	@RequestMapping(value="usergetinformation")//个人信息
     public void getMessage(HttpServletRequest request,HttpServletResponse response) throws IOException {
 		

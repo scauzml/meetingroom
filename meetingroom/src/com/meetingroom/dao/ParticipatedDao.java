@@ -10,5 +10,6 @@ public interface ParticipatedDao {
 	public List<Participated> searchParticipated(Participated participated);
 	public void delete(Participated participated);
 	public void save(Participated participated);
+	public int Count(Participated participated);
 	
 }

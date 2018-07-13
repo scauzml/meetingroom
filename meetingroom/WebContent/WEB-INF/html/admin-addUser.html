@@ -1,10 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html class="no-js fixed-layout">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>CMS WEB</title>
-    <meta name="description" content="这是主页/jsp的">
+    <title>会议室预订管理系统</title>
+    <meta name="description" content="会议室预订管理系统">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
@@ -39,7 +38,7 @@
                 </a>
                 <ul class="am-dropdown-content">
                     <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
-                    <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+                    <li><a href="logout"><span class="am-icon-power-off"></span> 退出</a></li>
                 </ul>
             </li>
             <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
@@ -51,7 +50,7 @@
     <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
         <div class="am-offcanvas-bar admin-offcanvas-bar">
             <ul class="am-list admin-sidebar-list">
-                <li><a href="#"><span class="am-icon-home"></span> 首页</a></li>
+                <li><a href="admin"><span class="am-icon-home"></span> 首页</a></li>
                 <li class="admin-parent">
                     <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 会议室管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1">
@@ -172,7 +171,7 @@
 <![endif]-->
 <script>
    function addUser() {
-        alert("点击了");
+       // alert("点击了");
         $.ajax({
                 type: "GET",//为post请求
                 url: "addUser",//这是我在后台接受数据的文件名
@@ -180,7 +179,7 @@
                 timeout:50000,
                 data: $('#form1').serialize(),//将该表单序列化
                 success: function () {
-                    alert("Success");
+                   // alert("Success");
                     window.location.href="adminusers.do";
                 }
             }

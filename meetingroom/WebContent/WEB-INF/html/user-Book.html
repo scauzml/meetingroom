@@ -1,10 +1,9 @@
-﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html class="no-js fixed-layout">
+﻿<html class="no-js fixed-layout">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>CMS WEB</title>
-    <meta name="description" content="这是主页/jsp的">
+    <title>会议室预订管理系统</title>
+    <meta name="description" content="这是会议室预订管理系统">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
@@ -47,8 +46,8 @@
                     <span class="am-icon-users"></span> 管理员 <span class="am-icon-caret-down"></span>
                 </a>
                 <ul class="am-dropdown-content">
-                    <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
-                    <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+                    <li><a href="user-information"><span class="am-icon-cog"></span> 设置</a></li>
+                    <li><a href="logout"><span class="am-icon-power-off"></span> 退出</a></li>
                 </ul>
             </li>
             <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
@@ -60,7 +59,7 @@
     <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
         <div class="am-offcanvas-bar admin-offcanvas-bar">
             <ul class="am-list admin-sidebar-list">
-                <li><a href="#"><span class="am-icon-home"></span> 首页</a></li>
+                <li><a href="admin"><span class="am-icon-home"></span> 首页</a></li>
                 <li class="admin-parent">
                     <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 个人预订 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1">
@@ -239,15 +238,15 @@
                 for(var i=0;i< length;i++){
                     code +=' <tr>' + '                                <td><input type="checkbox" name="isSelect" value="'+data[i].ID+'" /></td>' + '                                <td>'+data[i].ID+'</td>' + '                                <td colspan="2">'+data[i].roomname+'</td>' + '                                <td>'+data[i].location+'</td>' + '                                <td>'+data[i].floor+'</td>' + '                                <td class="am-hide-sm-only">'+data[i].limit+'</td>' + '                                <td class="am-hide-sm-only">'+data[i].equipment+'</td>' + '                                <td>' + '                                    <div class="am-btn-toolbar">' + '                                        <div class="am-btn-group am-btn-group-xs">' + '                                        </div>' + '                                    </div>' + '                                </td>' + '                            </tr>';
                 }
-                tableInf.innerHTML=code+"</tbody>" + "                    </table >"+'<input  id="btn2" type="submit" value="提交" onclick="subbmit()">';
+                tableInf.innerHTML=code+"</tbody>" + "                    </table >";
 
 
                 var code2='</br></br><div class="box">' +
                     '    <span style="font-size:22px">选择要发送邮件的员工</span>' +
                     '    <div class="content">';
 
-                var len2=obj.length2;
-                alert(len2);
+                var len2=obj.len2;
+                //alert(len2);
                 var data2=obj.data2;
                 var code2='</br></br><table id="roomtable"class="am-table am-table-striped am-table-hover table-main" style="display:table">';
                 code2+='<thead><tr><th class="table-check"><input type="checkbox" /></th><th class="table-id">ID</th><th class="table-title">用户名</th><th class="table-type">邮箱</th></tr>' +
@@ -258,7 +257,7 @@
                     code2 +=' <tr>' +
                         '<td><input type="checkbox" name="message" value="'+data2[i].userid+'" /></td>' +
                         '<td>'+data2[i].userid+'</td><td>'+data2[i].username+'</a></td>' +
-                        '<td></td>' +
+                        '<td>'+data2[i].email+'</td>' +
                         '<td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"></div></div></td></tr>';
                 }
                 tableInf.innerHTML+=code2+'</tbody></table >' +
@@ -275,7 +274,7 @@
         text = $("input:checkbox[name='message']:checked").map(function(index,elem) {
             return $(elem).val();
         }).get().join(',');
-        alert(text);
+        //alert(text);
         var obj=document.getElementById('test');
         var index=obj.selectedIndex; //序号，取当前选中选项的序号
         var time = obj.options[index].value;
@@ -284,11 +283,14 @@
         $('input:checkbox[name=isSelect]:checked').each(function(k){
             if(k == 0){
                 number = $(this).val();
+              //  alert(number);
             }else{
                 number=0;
                 alert("选择一个");
             }
         });
+        
+       
         $.ajax({
             type:"GET",//为post请求
             url:"addBook",//这是我在后台接受数据的文件名
@@ -297,11 +299,13 @@
             //data:{"number":number,"date":date,"time":time,"user":"001"},//将该表单序列化
             async:false,//设置成true，这标志着在请求开始后，其他代码依然能够执行。如果把这个选项设置成false，这意味着所有的请求都不再是异步的了，这也会导致浏览器被锁死
             success:function(result) {//请求成功之后的操作
-                if(result == "Success"){
+               
                     //根据字串返回页面
-                    alert("Success");
+                    alert("Success"); 
                     window.location.href="user-booking.html";
-                }
+                
+            },error:function(XMLHttpRequest,test,errorthrown){
+            	alert("错误");
             }
         });
     }

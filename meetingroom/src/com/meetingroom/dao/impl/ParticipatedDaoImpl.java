@@ -21,16 +21,20 @@ public class ParticipatedDaoImpl extends HibernateDaoSupport implements Particip
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Participated> searchParticipated(Participated participated) {
 		// TODO Auto-generated method stub
 		Session session=this.getSession();
 		Criteria criteria=session.createCriteria(Participated.class);
 		if(participated!=null) {
-			if(participated.getBookid()!=null) {
+			if(participated.getBookid()!=null&&!participated.getBookid().equals("")) {
+				System.out.println("bookid "+participated.getBookid());
 				criteria.add(Restrictions.eq("bookid",participated.getBookid()));
+				
 			}
-			if(participated.getUserid()!=null) {
+			if(participated.getUserid()!=null&&!participated.getUserid().equals("")) {
+				System.out.println("userid "+participated.getUserid());
 				criteria.add(Restrictions.eq("userid",participated.getUserid()));
 			}
 		}
@@ -58,6 +62,20 @@ public class ParticipatedDaoImpl extends HibernateDaoSupport implements Particip
 		session.flush();
 		session.close();
 		
+	}
+
+	@Override
+	public int Count(Participated participated) {
+		// TODO Auto-generated method stub
+		Session session=this.getSession();
+		Criteria criteria=session.createCriteria(Participated.class);
+		if(participated!=null) {
+			if(participated.getBookid()!=null) {
+				criteria.add(Restrictions.eq("bookid",participated.getBookid()));
+			}
+			
+		}
+		return criteria.list().size();
 	}
 
 }

@@ -32,35 +32,42 @@ public class BookedDaoImpl extends HibernateDaoSupport implements BookedDao{
 		return bookeds;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Booked> searchBkedByCondition(Booked booked) {
 		Session session = this.getSession();
 		Criteria criteria = session.createCriteria(Booked.class);
 		if(booked!=null) {
 			if(booked.getId()!=null) {
+				System.out.println("bookedgetid "+booked.getId());
 				criteria.add(Restrictions.eq("id", booked.getId()));
 			}
 			if(booked.getUser()!=null) {
-				criteria.add(Restrictions.eq("user", booked.getUser()));
+				System.out.println("user "+booked.getUser().getUserid());
+				criteria.add(Restrictions.eq("user.userid", booked.getUser().getUserid()));
 			}
 			if(booked.getMeetingroom()!=null) {
-				criteria.add(Restrictions.eq("meetingroom", booked.getMeetingroom()));
+				System.out.println("meetingroom "+booked.getMeetingroom().getId());
+				criteria.add(Restrictions.eq("meetingroom.id", booked.getMeetingroom().getId()));
 			}
 			if(booked.getDate()!=null) {
+				System.out.println("date "+booked.getDate().getTime());
 				criteria.add(Restrictions.eq("date", booked.getDate()));
 			}
 			if(booked.getTimeto()!=null&&!booked.getTimeto().equals("")) {
+				System.out.println("timeto "+ booked.getTimeto());
 				criteria.add(Restrictions.eq("timeto", booked.getTimeto()));
 			}
 			if(booked.getNumofparticipant()!=null&&!booked.getNumofparticipant().equals("")) {
+				System.out.println("numofparticipant "+ booked.getNumofparticipant());
 				criteria.add(Restrictions.eq("numofparticipant", booked.getNumofparticipant()));
 			}
 		}
 		
-		List<Booked> list =criteria.list();
-		session.flush();
-		session.close();
-		return list;
+	
+		
+		
+		return criteria.list();
 	}
 
 	@Override

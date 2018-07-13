@@ -1,10 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html class="no-js fixed-layout">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Meering Room  WEB</title>
-    <meta name="description" content="这是主页/jsp的">
+    <title>会议室预订管理系统</title>
+    <meta name="description" content="这是会议室预订管理系统">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
@@ -23,10 +22,10 @@
     <script>
         
         function testUpdate(e) {
-        	alert("点击了");
+        /* 	alert("点击了"); */
             //var no=document.getElementById('btn2').value;
             var no=$(e).val();
-            alert(no);
+          /*   alert(no); */
             $.ajax({
                 type:"GET",
                 url:"updateRoomSaveId",
@@ -41,10 +40,10 @@
 
     <script>
         function testdelete(e){
-        	 alert("点击了");
+        	 //alert("点击了");
              //var no=document.getElementById('btn2').value;
              var no=$(e).val();
-             alert(no);
+             //alert(no);
             $.ajax({
                 type:"GET",
                 url:"deleteRoom",
@@ -137,7 +136,7 @@
                 </a>
                 <ul class="am-dropdown-content">
                     <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
-                    <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+                    <li><a href="logout"><span class="am-icon-power-off"></span> 退出</a></li>
                 </ul>
             </li>
             <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
@@ -204,9 +203,9 @@
                 </div>
                 <div class="am-u-sm-12 am-u-md-3">
                     <div class="am-input-group am-input-group-sm">
-                        <input type="text" class="am-form-field" id="input_search">
+                      
                         <span class="am-input-group-btn">
-                             <button class="am-btn am-btn-default" type="button" id="btn_search">搜索</button>
+                             <button class="am-btn am-btn-default" type="button"  id="btn_search"><a href="expExcel" download="data.xls">导出</a></button>
                         </span>
                     </div>
                 </div>
@@ -242,7 +241,35 @@
 <script src="assets/js/amazeui.ie8polyfill.min.js"></script>
 <![endif]-->
 
-
+<script>
+function download() {
+	   var url = 'expExcel';
+	   var xhr = new XMLHttpRequest();
+	   xhr.open('GET', url, true);        // 也可以使用POST方式，根据接口
+	   xhr.responseType = "blob";    // 返回类型blob
+	   // 定义请求完成的处理函数，请求前也可以增加加载框/禁用下载按钮逻辑
+	   xhr.onload = function () {
+	       // 请求完成
+	       if (this.status === 200) {
+	           // 返回200
+	           var blob = this.response;
+	           var reader = new FileReader();
+	           reader.readAsDataURL(blob);    // 转换为base64，可以直接放入a表情href
+	           reader.onload = function (e) {
+	               // 转换完成，创建一个a标签用于下载
+	               var a = document.createElement('a');
+	               a.download = 'data.xlsx';
+	               a.href = e.target.result;
+	               $("body").append(a);    // 修复firefox中无法触发click
+	               a.click();
+	               $(a).remove();
+	           }
+	       }
+	   };
+	   // 发送ajax请求
+	   xhr.send()
+	}
+</script>
 
 
 <!--[if (gte IE 9)|!(IE)]><!-->

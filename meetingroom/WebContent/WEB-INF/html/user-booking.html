@@ -1,10 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html class="no-js fixed-layout">
+﻿<html class="no-js fixed-layout">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>CMS WEB</title>
-    <meta name="description" content="这是主页/jsp的">
+    <title>会议室预订管理系统</title>
+    <meta name="description" content="这是会议室预订管理系统">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
@@ -38,8 +37,8 @@
                     <span class="am-icon-users"></span> 用户 <span class="am-icon-caret-down"></span>
                 </a>
                 <ul class="am-dropdown-content">
-                    <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
-                    <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+                    <li><a href="user-information"><span class="am-icon-cog"></span> 设置</a></li>
+                    <li><a href="logout"><span class="am-icon-power-off"></span> 退出</a></li>
                 </ul>
             </li>
             <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
@@ -117,10 +116,6 @@
             <div class="am-g">
                 <div class="am-u-sm-12">
                     <form class="am-form" id="am-form">
-
-
-
-
                         <hr />
                     </form>
                 </div>
@@ -157,80 +152,129 @@
 <script src="assets/js/amazeui.min.js"></script>
 <script src="assets/js/app.js"></script>
 <script>
-window.onload=function () {
-    $.ajax({
-        type:"GET",
-        url:"booking",
-        data:{"status":"login"},
-        success:function (result) {
-            var obj=$.parseJSON(result);
-            var data=obj.data;//获得数据
-            //动态生成表格
-            var tableInf=document.getElementById("am-form");
-            var code='   <table class="am-table am-table-striped am-table-hover table-main">' +
-                '                            <thead>' +
-                '                            <tr>' +
-                '                                <th class="table-check"><input type="checkbox" /></th><th class="table-id">ID</th><th class="table-title">预定时间</th><th class="table-type">会议室地址</th><th class="table-author am-hide-sm-only">预定人</th><th class="table-date am-hide-sm-only">与会人员</th><th class="table-set">操作</th>' +
-                '                            </tr>' +
-                '                            </thead>' +
-                '                            <tbody>';
+    window.onload=function () {
+        $.ajax({
+            type:"GET",
+            url:"booking",
+            data:{"status":"login"},
+            success:function (result) {
+                var obj=$.parseJSON(result);
+                var data=obj.data;//获得数据
+                //动态生成表格
+                var tableInf=document.getElementById("am-form");
+                var code='   <table class="am-table am-table-striped am-table-hover table-main">' +
+                    '                            <thead>' +
+                    '                            <tr>' +
+                    '                                <th class="table-check"><input type="checkbox" /></th><th class="table-id" colspan="2">会议室名字</th><th class="table-title">预定时间</th><th class="table-type">会议室地址</th><th class="table-author am-hide-sm-only">预定人</th><th class="table-date am-hide-sm-only">与会人员</th><th class="table-set">操作</th>' +
+                    '                            </tr>' +
+                    '                            </thead>' +
+                    '                            <tbody>';
 
-            for(var i=0;i< obj.length;i++){
-                code +=' <tr>' +
-                    '                                <td><input type="checkbox" name="isSelect" value="'+data[i].booked_id+'" /></td>' +
-                    '                                <td>'+data[i].roomId+'</td>' +
-                    '                                <td>'+data[i].time+'</td>' +
-                    '                                <td>'+data[i].address+'</td>' +
-                    '                                <td class="am-hide-sm-only">'+data[i].book_user+'</td>' +
-                    '                                <td class="am-hide-sm-only">'+data[i].participant+'</td>' +
-                    '                                <td>' +
-                    '                                    <div class="am-btn-toolbar">' +
-                    '                                        <div class="am-btn-group am-btn-group-xs">' +
-                    '<button class="am-btn am-btn-default am-btn-xs am-text-secondary" id="btn1" value="'+data[i].booked_id+'" onclick="testdelete($(this))"><span class="am-icon-trash-o"></span> 删除</button>' +
-                    '                                        </div>' +
-                    '                                    </div>' +
-                    '                                </td>' +
-                    '                            </tr>';
+                for(var i=0;i< obj.length;i++){
+                    code +=' <tr>' +
+                        '                                <td><input type="checkbox" name="isSelect" value="'+data[i].booked_id+'" /></td>' +
+                        '                                <td colspan="2">'+data[i].roomId+'</td>' +
+                        '                                <td>'+data[i].time+'</td>' +
+                        '                                <td>'+data[i].address+'</td>' +
+                        '                                <td class="am-hide-sm-only">'+data[i].book_user+'</td>' +
+                        '                                <td class="am-hide-sm-only">'+
+                        '<div class="login-header" id="login-header">' +
+                        '<a class="ahref" id="ahref" href="javascript:void(0);" onclick="participant('+data[i].booked_id+')">'+data[i].participant+'</a></div></td>' +
+                        '                                <td>' +
+                        '                                    <div class="am-btn-toolbar">' +
+                        '                                        <div class="am-btn-group am-btn-group-xs">' +
+                        '<button class="am-btn am-btn-default am-btn-xs am-text-secondary" id="btn1" value="'+data[i].booked_id+'" onclick="testdelete($(this))"><span class="am-icon-trash-o"></span> 删除</button>' +
+                        '                                        </div>' +
+                        '                                    </div>' +
+                        '                                </td>' +
+                        '                            </tr>';
+                }
+                tableInf.innerHTML=code+"</tbody>" +
+                    "                    </table >"+"                        <div class=\"am-cf\" id=\"am-cf\">" +
+                    "                            共 "+obj.length+"条记录" +
+                    "                            <div class=\"am-fr\">" +
+                    "                                <ul class=\"am-pagination\">" +
+                    "                                    <li class=\"am-disabled\"><a href=\"#\">«</a></li>" +
+                    "                                    <li class=\"am-active\"><a href=\"#\">1</a></li>" +
+                    "                                    <li><a href=\"#\">2</a></li>" +
+                    "                                    <li><a href=\"#\">3</a></li>" +
+                    "                                    <li><a href=\"#\">4</a></li>" +
+                    "                                    <li><a href=\"#\">5</a></li>" +
+                    "                                    <li><a href=\"#\">»</a></li>" +
+                    "                                </ul>" +
+                    "                            </div>" +
+                    "                        </div>"+
+                    "<div id='conn'></div>";
+
             }
-            tableInf.innerHTML=code+"</tbody>" +
-                "                    </table >"+"                        <div class=\"am-cf\" id=\"am-cf\">" +
-                "                            共 "+obj.length+"条记录" +
-                "                            <div class=\"am-fr\">" +
-                "                                <ul class=\"am-pagination\">" +
-                "                                    <li class=\"am-disabled\"><a href=\"#\">«</a></li>" +
-                "                                    <li class=\"am-active\"><a href=\"#\">1</a></li>" +
-                "                                    <li><a href=\"#\">2</a></li>" +
-                "                                    <li><a href=\"#\">3</a></li>" +
-                "                                    <li><a href=\"#\">4</a></li>" +
-                "                                    <li><a href=\"#\">5</a></li>" +
-                "                                    <li><a href=\"#\">»</a></li>" +
-                "                                </ul>" +
-                "                            </div>" +
-                "                        </div>";
 
-        }
-
-    })
-}
+        })
+    }
 </script>
 <script>
     function testdelete(e){
-    	 alert("点击了");
-         //var no=document.getElementById('btn2').value;
-         var no=$(e).val();
-         alert(no);
+        //alert("点击了");
+        //var no=document.getElementById('btn2').value;
+        var no=$(e).val();
+        //alert(no);
         $.ajax({
             type:"GET",
             url:"deleteBook",
             data:{"bookedid":no},
             success:function () {
-                
-                    location.reload();
-                    alert("返回了");
-                
+
+                location.reload();
+               // alert("返回了");
+
             }
         });
     }
+</script>
+<script>
+    function participant(e){
+        //alert("点击了参与者");
+      //  alert(e);
+        $.ajax({
+            type: "GET",
+            url: "watchp",//查询与会人员的URL，要改
+            data: {"booked_id": e},
+            success: function (result) {
+            	/* alert("get"); */
+            /* 	alert(result); */
+                var obj = $.parseJSON(result);
+                var data = obj.data;//获得数据
+                //动态生成表格
+                //var tableInf = document.getElementById("login-header");
+                var codee = '<div class="login" id="divv">' +
+                    '    <div class="login-title">与会人员<span><a href="javascript:void(0);" class="close-login" onclick="closeTable()">关闭</a></span></div>' +
+                    '    <div class="login-input-content">' +
+                    '        <div class="table-responsive">' +
+                    '    <table class="table">' +
+                    '        <thead>' +
+                    '            <tr>' +
+                    '                <th>用户名</th>' +
+                    '                <th>邮箱地址</th>' +
+                    '            </tr>' +
+                    '        </thead>' +
+                    '        <tbody>';
+                for (var i = 0; i < obj.length; i++) {
+                    codee += ' <tr>' + '<td>'+data[i].username+'</td>' +
+                        '                <td>'+data[i].useremail+'</td>' +
+                        '            </tr>';
+                }
+                //tableInf.innerHTML = codee + "</tbody>" + "                    </table >";
+                $("#conn").html(codee + "</tbody>" + "                    </table >");
+                //$('.login').hide();
+            }
+        });
+
+    };
+
+    function closeTable(){
+        //document.getElementById("divv").style.display="none";
+        $('.login').hide();
+    }
+
 </script>
 </body>
 </html>

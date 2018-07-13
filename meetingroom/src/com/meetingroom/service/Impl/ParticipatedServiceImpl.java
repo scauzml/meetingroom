@@ -41,4 +41,10 @@ public class ParticipatedServiceImpl implements ParticipatedService  {
 		participatedDao.save(participated);
 	}
 
+	@Override
+	public int Count(Participated participated) {
+		// TODO Auto-generated method stub		
+		return participatedDao.Count(participated);
+	}
+
 }

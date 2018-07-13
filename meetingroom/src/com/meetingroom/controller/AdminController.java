@@ -1,12 +1,17 @@
 package com.meetingroom.controller;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.eclipse.jdt.internal.compiler.lookup.ImplicitNullAnnotationVerifier;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,12 +25,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.meetingroom.model.Booked;
 import com.meetingroom.model.Equipment;
 import com.meetingroom.model.Has;
+import com.meetingroom.model.Log;
 import com.meetingroom.model.Meetingroom;
+import com.meetingroom.model.Participated;
 import com.meetingroom.model.User;
 import com.meetingroom.service.BookedService;
 import com.meetingroom.service.EquipmentService;
 import com.meetingroom.service.HasService;
+import com.meetingroom.service.LogService;
 import com.meetingroom.service.MeetingroomService;
+import com.meetingroom.service.ParticipatedService;
 import com.meetingroom.service.UserService;
 import com.sun.swing.internal.plaf.metal.resources.metal;
 
@@ -38,10 +47,28 @@ public class AdminController {
 	MeetingroomService meetingroomService;
 	HasService hasService;
 	UserService userService;
+	BookedService bookedService;
+	ParticipatedService participatedService;
+	LogService logService;
+
+	@Autowired
+	public void setParticipatedService(ParticipatedService participatedService) {
+		this.participatedService = participatedService;
+	}
+
+	@Autowired
+	public void setLogService(LogService logService) {
+		this.logService = logService;
+	}
 
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
+	}
+
+	@Autowired
+	public void setBookedService(BookedService bookedService) {
+		this.bookedService = bookedService;
 	}
 
 	@Autowired
@@ -59,14 +86,10 @@ public class AdminController {
 		this.equipmentService = equipmentService;
 	}
 
-	
-
-	@RequestMapping("admin-rooms")
+	@RequestMapping("admin")
 	public String gett() {
 		return "admin-rooms";
 	}
-
-	
 
 	@RequestMapping(value = "admin-updateRoom")
 	public String getBianji() {
@@ -96,7 +119,7 @@ public class AdminController {
 				JSONObject json2 = new JSONObject();
 				JSONArray array = new JSONArray();
 				json2.put("length", meetingList.size());
-				System.out.println("size"+meetingList.size());
+				System.out.println("size" + meetingList.size());
 				for (int i = 0; i < meetingList.size(); i++) {
 					JSONObject json = new JSONObject();
 					json.put("roomId", meetingList.get(i).getId());
@@ -106,12 +129,25 @@ public class AdminController {
 					Has has = new Has();
 					has.setMeetingroom(meetingList.get(i));
 					List<Has> hass = hasService.searchHas(has);
-					json.put("equipment", "equipment");
+					String equip = null;
+					if (hass.get(0).getEquipment().getEquipment().equals("media")) {
+						equip = "多媒体室";
+					}
+					if (hass.get(0).getEquipment().getEquipment().equals("computer")) {
+						equip = "电脑室";
+					}
+					if (hass.get(0).getEquipment().getEquipment().equals("touying")) {
+						equip = "投影室";
+					}
+					if (hass.get(0).getEquipment().getEquipment().equals("smal")) {
+						equip = "小型办公室";
+					}
+					json.put("equipment",equip);
 					array.put(json);
 				}
 				json2.put("data", array);
 				response.getWriter().print(json2.toString());
-				System.out.println("denglu  "+json2.toString());
+				System.out.println("denglu  " + json2.toString());
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -133,12 +169,50 @@ public class AdminController {
 	@RequestMapping(value = "addRoom", method = RequestMethod.GET)
 	public void addRoom(HttpServletRequest request, HttpServletResponse response) {
 
-		String roomname = request.getParameter("room-name");
-		String location = request.getParameter("room-location");
-		String floor = request.getParameter("room-floor");
-		String capacity = request.getParameter("room-capacity");
+		String roomname = null;/* request.getParameter("room-name"); */
+		String location = null;/* request.getParameter("room-location"); */
+		String floor = null;/* request.getParameter("room-floor"); */
+		String capacity = null;/* request.getParameter("room-capacity"); */
+		String equipid = null;/* request.getParameter("eq"); */
+		/*
+		 * String equipid1=request.getParameter("test");
+		 * System.out.println(" eq "+equipid); System.out.println(" eq1 "+equipid1);
+		 */
 		/* String equipment=request.getParameter("equipment"); */
+		Map<String, String[]> map = request.getParameterMap();
+		for (String key : map.keySet()) {
+			System.out.println("key " + key);
+			for (String value : map.get(key)) {
+				System.out.println("value " + value);
+			}
+			if (key.equals("room-name")) {// 获取时间date
+				for (String value : map.get(key)) {
+					roomname = value;
+				}
+			}
+			if (key.equals("room-location")) {// 获取时间date
+				for (String value : map.get(key)) {
+					location = value;
+				}
+			}
+			if (key.equals("room-floor")) {// 获取楼层
 
+				for (String value : map.get(key)) {
+					floor = value;
+				}
+
+			}
+			if (key.equals("room-capacity")) {// 获取楼层
+				for (String value : map.get(key)) {
+					capacity = value;
+				}
+			}
+			if (key.equals("equipment")) {// 获取楼层
+				for (String value : map.get(key)) {
+					equipid = value;
+				}
+			}
+		}
 		Meetingroom meetingroom = new Meetingroom();
 		meetingroom.setRoomname(roomname);
 		meetingroom.setLocate(location);
@@ -147,9 +221,7 @@ public class AdminController {
 		meetingroomService.savaMR(meetingroom);
 
 		Equipment equipment2 = new Equipment();
-		equipment2.setId(1);
-		;
-
+		equipment2.setId(Integer.parseInt(equipid));
 		// 取出刚才的meetingroom和equipment，获取他们的对象
 		/*
 		 * List<Equipment> liste=equipmentService.getEquipment(equipment2); Equipment
@@ -160,7 +232,9 @@ public class AdminController {
 		Has has = new Has();
 		has.setEquipment(equipment2);
 		has.setMeetingroom(meetingroom2);
+
 		hasService.save(has);
+
 		JSONObject json = new JSONObject();
 		try {
 			json.put("status", "true");
@@ -185,11 +259,28 @@ public class AdminController {
 		Has has2 = listH.get(0);
 		Equipment equipment = has2.getEquipment();
 		// 先删除Has
+		Booked booked = new Booked();
+		booked.setMeetingroom(meetingroom);
+		List<Booked> bookeds = bookedService.searchBkedByCondition(booked);
+		if (bookeds.size() > 0) {
+			for (int i = 0; i < bookeds.size(); i++) {
+				Participated participated = new Participated();
+				participated.setBookid(bookeds.get(i).getId());
+				List<Participated> list = participatedService.searchParticipated(participated);
+				if (list.size() > 0) {
+					for (int j = 0; j < list.size(); j++) {
+						participatedService.delete(list.get(j));
+					}
+
+				}
+				bookedService.deleteBKed(bookeds.get(i));
+			}
+		}
+
 		hasService.delete(has2);
+
 		// 再删除meetingroom
 		meetingroomService.deleteMR(meetingroom);
-		
-		
 
 		JSONObject json = new JSONObject();
 		try {
@@ -210,15 +301,15 @@ public class AdminController {
 	@RequestMapping("searchUpdateRoom") // 当页面跳转至修改会议室的页面，需要在session中找出roomId然后返回room的数据
 	public void searchUpdate(HttpServletRequest request, HttpServletResponse response) {
 		String roomId = (String) request.getSession().getAttribute("roomId");
-		System.out.println("roomid"+ roomId);
+		System.out.println("roomid" + roomId);
 		Meetingroom meetingroom = new Meetingroom();
 		meetingroom.setId(Integer.valueOf(roomId));
 		JSONObject json = new JSONObject();
 		List<Meetingroom> meetingList = meetingroomService.searchMRByCondition(meetingroom);// 首页查询第一页内容
-		System.out.println("size "+ meetingList.size());
+		System.out.println("size " + meetingList.size());
 		try {
 			for (int i = 0; i < meetingList.size(); i++) {
-				System.out.println("name"+ meetingList.get(i).getRoomname());
+				System.out.println("name" + meetingList.get(i).getRoomname());
 				json.put("roomId", meetingList.get(i).getRoomname());
 				json.put("address", meetingList.get(i).getLocate());
 				json.put("floor", meetingList.get(i).getFloor());
@@ -263,27 +354,27 @@ public class AdminController {
 	// 保存修改的信息,对应admin-updateRoom里面的save方法的url
 	@RequestMapping(value = "saveUpdate")
 	public void updateRoom(HttpServletResponse response, HttpServletRequest request) {
-		String  roomname =request.getParameter("roomname");
-		System.out.println("romnaeme"+ roomname);
+		String roomname = request.getParameter("roomname");
+		System.out.println("romnaeme" + roomname);
 		String location = request.getParameter("address");
 		String floor = request.getParameter("floor");
 		String capacity = request.getParameter("limit");
 		String equipment = request.getParameter("equipment");
-        Integer id=Integer.parseInt((String)request.getSession().getAttribute("roomId"));
-        System.out.println("romname"+ roomname+" location"+ location+" capacity"+capacity);
-        Meetingroom meetingroom = new Meetingroom();
+		Integer id = Integer.parseInt((String) request.getSession().getAttribute("roomId"));
+		System.out.println("romname" + roomname + " location" + location + " capacity" + capacity);
+		Meetingroom meetingroom = new Meetingroom();
 		meetingroom.setId(id);
 		meetingroom.setRoomname(roomname);
 		meetingroom.setLocate(location);
 		meetingroom.setFloor(floor);
 		meetingroom.setPeoplelimit(capacity);
 		meetingroomService.UpdateMR(meetingroom);
-//		Has has = new Has();
-//		has.setMeetingroom(meetingroom);
-//		List<Has> listH = hasService.searchHas(has);
-//		Has has2 = listH.get(0);
-//		Equipment equipment2 = has2.getEquipment();
-//		equipmentService.update(equipment2);
+		// Has has = new Has();
+		// has.setMeetingroom(meetingroom);
+		// List<Has> listH = hasService.searchHas(has);
+		// Has has2 = listH.get(0);
+		// Equipment equipment2 = has2.getEquipment();
+		// equipmentService.update(equipment2);
 		// 取出刚才的meetingroom和equipment，获取他们的对象
 		JSONObject json = new JSONObject();
 		try {
@@ -293,7 +384,7 @@ public class AdminController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        System.out.println("fdf");
+		System.out.println("fdf");
 	}
 
 	@RequestMapping(value = "search")
@@ -318,7 +409,6 @@ public class AdminController {
 	@RequestMapping(value = "admin-users") // 返回用户管理时的所有用户
 	public void getUser(HttpServletResponse response, HttpServletRequest request) {
 
-		
 		List<User> userList = userService.getUserList();// 首页查询第一页内容
 		try {
 			JSONObject json2 = new JSONObject();
@@ -381,10 +471,29 @@ public class AdminController {
 	public void deleteUser(HttpServletResponse response, HttpServletRequest request) {
 
 		String userid = request.getParameter("id").trim();
-		System.out.println("userid "+userid);
+		System.out.println("userid " + userid);
 		Integer id = Integer.parseInt(userid);
 		User user = new User();
 		user.setUserid(id);
+		Booked booked = new Booked();
+		booked.setUser(user);
+		List<Booked> listb = bookedService.searchBkedByCondition(booked);
+		if (listb.size() > 0) {
+			for (int i = 0; i < listb.size(); i++) {
+
+				Participated participated = new Participated();
+				participated.setBookid(listb.get(i).getId());
+				List<Participated> list = participatedService.searchParticipated(participated);
+				if (list.size() > 0) {
+					for (int j = 0; j < list.size(); j++) {
+						participatedService.delete(list.get(j));
+					}
+
+				}
+				bookedService.deleteBKed(listb.get(i));
+
+			}
+		}
 		userService.deleteUser(user);
 		JSONObject json = new JSONObject();
 		try {
@@ -412,9 +521,81 @@ public class AdminController {
 		}
 	}
 
-	/*@RequestMapping(value = "adminusers.do")
-	public String adminusers() {
+	@RequestMapping(value = "expExcel")
+	public void expExcel(HttpServletRequest request, HttpServletResponse response) {
+		// 导出到桌面
+		// FileSystemView fsv = FileSystemView.getFileSystemView();
+		// String desktop = fsv.getHomeDirectory().getPath();
+		// String filePath = desktop + "/template.xls";
+		// File file = new File(filePath);
+		// File file=new File("");
+		// OutputStream output = null;
+		// try {
+		// output = new FileOutputStream(file);
+		// } catch (FileNotFoundException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
+		HSSFWorkbook workbook = new HSSFWorkbook();
+		HSSFSheet sheet = workbook.createSheet();
+		HSSFRow row = sheet.createRow(sheet.getLastRowNum());
+		row.createCell(0).setCellValue("num");
+		row.createCell(1).setCellValue("userid");
+		row.createCell(2).setCellValue("roomid");
+		row.createCell(3).setCellValue("timeto");
+		row.createCell(4).setCellValue("number of members");
+		List<Booked> bookeds = bookedService.getAllBKed();
+		List<Log> logs = logService.getAllLog();
+		if (bookeds.size() == 0 && logs.size() == 0)
+			return;
+		int num = 1;
+		for (int i = 0; i < bookeds.size(); i++) {// 写入未完成的预订
+			HSSFRow r = sheet.createRow(sheet.getLastRowNum() + 1);
+			r.createCell(0).setCellValue(num);
+			r.createCell(1).setCellValue(bookeds.get(i).getUser().getName());
+			r.createCell(2).setCellValue(bookeds.get(i).getMeetingroom().getRoomname());
+			r.createCell(3).setCellValue(bookeds.get(i).getTimeto());
+			r.createCell(4).setCellValue(bookeds.get(i).getNumofparticipant());
+			num++;
+		}
+		for (int i = 0; i < logs.size(); i++) {// 写入已完成的预订
+			HSSFRow r = sheet.createRow(sheet.getLastRowNum() + 1);
+			r.createCell(0).setCellValue(num);
+			r.createCell(1).setCellValue(logs.get(i).getBooked().getUser().getUserid());
+			r.createCell(2).setCellValue(logs.get(i).getBooked().getMeetingroom().getId());
+			r.createCell(3).setCellValue(logs.get(i).getTimeto());
+			r.createCell(4).setCellValue(logs.get(i).getBooked().getNumofparticipant());
+			num++;
+		}
+		OutputStream outputStream = null;
+		try {
+			outputStream = response.getOutputStream();
+			response.reset();
+			response.setContentType("application/vnd.ms-excel");
+			response.setHeader("Content-disposition", "attachment;filename=template.xls");
+			// response.setHeader("Content-Disposition", "attachment; filename=\"" +
+			// "template.xls" + "\"");// 这里设置一下让浏览器弹出下载提示框，而不是直接在浏览器中打开
+			workbook.write(outputStream);
+			outputStream.flush();
+			outputStream.close();
+			System.out.println("success");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-	}*/
+	/*
+	 * @RequestMapping(value = "adminusers.do") public String adminusers() {
+	 * 
+	 * }
+	 */
 
+	@RequestMapping(value="logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		request.getSession().removeAttribute("user");
+		request.getSession().removeAttribute("roomid");
+		return "redirect:login";
+	}
+	
+	
 }
