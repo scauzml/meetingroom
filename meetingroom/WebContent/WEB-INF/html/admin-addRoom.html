@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="assets/css/admin.css" >
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
-<script>
+<!-- <script>
     function addRoom() {
         alert("点击了");
         $.ajax({
@@ -30,10 +30,10 @@
             }
         )
     }
-</script>
+</script> -->
 </head>
 <body>
-<script>
+<!-- <script>
     function addRoom() {
         alert("点击了");
         $.ajax({
@@ -48,7 +48,7 @@
         )
     }
     
-</script>
+</script> -->
 <!--[if lte IE 9]>
 <p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
     以获得更好的体验！</p>
@@ -176,7 +176,7 @@
 
                         <div class="am-form-group">
                             <div class="am-u-sm-9 am-u-sm-push-3">
-                                <button type="submit" id="btn1" class="am-btn am-btn-primary" onclick="addRoom()" >增加会议室</button>
+                                <button type="button" id="btn1" class="am-btn am-btn-primary" onclick="addRoom()" >增加会议室</button>
                             </div>
                         </div>
                     </form>
@@ -202,7 +202,7 @@
 <script src="assets/js/amazeui.ie8polyfill.min.js"></script>
 <![endif]-->
 
-<script>
+<!-- <script>
     function addRoom() {
         alert("点击了");
         $.ajax({
@@ -216,7 +216,7 @@
             }
         )
     }
-</script>
+</script> -->
 
 <!--[if (gte IE 9)|!(IE)]><!-->
 <script src="assets/js/jquery.min.js"></script>
@@ -230,11 +230,18 @@
         alert("点击了");
         $.ajax({
                 type: "GET",//为post请求
+                contentType:"application/json",
                 url: "addRoom",//这是我在后台接受数据的文件名
                 data: $('#form1').serialize(),//将该表单序列化
-                success: function (result) {
+                dataType:"json",
+                timeout:50000,
+                success: function () {
                     alert("Success");
                     window.location.href="admin-rooms";
+                },error:function(XMLHttpRequest,textStatus,errorThrown){
+                	alert("status"+XMLHttpRequest.status);
+                	alert("readyState"+XMLHttpRequest.readyState);
+                	alert(textStatus);
                 }
             }
         )

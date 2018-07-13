@@ -59,7 +59,7 @@ public class HasDaoImpl extends HibernateDaoSupport implements HasDao{
 		// TODO Auto-generated method stub
 		
 		Session session = this.getSession();
-		session.delete(session);
+		session.delete(has);
 		session.flush();
 		session.close();
 	}

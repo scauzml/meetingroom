@@ -135,9 +135,10 @@
         $.ajax({
             type: "GET",
             url: "searchUpdateRoom",//修改页面加载时，到后台取得保存在session的id，然后后台查找到后把数据返回填充到前端
-            data: {"status": "login"},
+            data: {"status": "login"},async:false,
             success: function (result) {
-            	alert("result");
+            	alert("resultee");
+            	alert(result);
                 var obj=$.parseJSON(result);
                 var data=obj;//获得数据
                 //动态生成表格
@@ -161,7 +162,7 @@
                     '                        <div class="am-form-group">' +
                     '                            <label for="room-floor" class="am-u-sm-3 am-form-label">会议室楼层 / Floor</label>' +
                     '                            <div class="am-u-sm-9">' +
-                    '                                <input type="text" id="room-floor" name="room-floor" placeholder="输入会议室楼层 / Floor" value="'+data.location+'">' +
+                    '                                <input type="text" id="room-floor" name="room-floor" placeholder="输入会议室楼层 / Floor" value="'+data.floor+'">' +
                     '                                <small>输入会议室在几楼</small>' +
                     '                            </div>' +
                     '                        </div>' +
@@ -185,7 +186,7 @@
                     '' +
                     '                        <div class="am-form-group">' +
                     '                            <div class="am-u-sm-9 am-u-sm-push-3">' +
-                    '                                <button  id="btn1" type="submit" class="am-btn am-btn-primary" onclick="save()" >保存会议室</button>' +
+                    '                                <button  id="btn1" type="button" class="am-btn am-btn-primary" onclick="save()" >保存会议室</button>' +
                     '                            </div>' +
                     '                        </div>';
                 tableInf.innerHTML=code;
@@ -198,17 +199,21 @@
         $.ajax({
             type:"GET",
             url:"saveUpdate",
+            contentType:"application/json",
+            dataType:"json",
+            timeout:50000,
             data:{
-                "roomId":$("#room-id").val(),
+                "roomname":$("#room-id").val(),
                 "address":$("#room-location").val(),
-                "location":$("#room-floor").val(),
+                "floor":$("#room-floor").val(),
                 "limit":$("#room-capacity").val(),
                 "equipment":$("#room-equipment").val()
             },
-            success:function (result) {
+            async:false,
+            success: function () {
                 //修改成功之后跳到所有会议室页面
-                alert("Success");
-                window.location.href="admin-rooms.html";
+              
+                window.location.href="admin-rooms";
             }
         });
     }

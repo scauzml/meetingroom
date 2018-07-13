@@ -59,20 +59,14 @@ public class AdminController {
 		this.equipmentService = equipmentService;
 	}
 
-	@RequestMapping(value = "admin")
-	public String get() {
-		return "admin-rooms";
-	}
+	
 
 	@RequestMapping("admin-rooms")
 	public String gett() {
 		return "admin-rooms";
 	}
 
-	@RequestMapping(value = "xinzeng")
-	public String getXinZen() {
-		return "admin-addRoom";
-	}
+	
 
 	@RequestMapping(value = "admin-updateRoom")
 	public String getBianji() {
@@ -102,6 +96,7 @@ public class AdminController {
 				JSONObject json2 = new JSONObject();
 				JSONArray array = new JSONArray();
 				json2.put("length", meetingList.size());
+				System.out.println("size"+meetingList.size());
 				for (int i = 0; i < meetingList.size(); i++) {
 					JSONObject json = new JSONObject();
 					json.put("roomId", meetingList.get(i).getId());
@@ -111,11 +106,12 @@ public class AdminController {
 					Has has = new Has();
 					has.setMeetingroom(meetingList.get(i));
 					List<Has> hass = hasService.searchHas(has);
-					json.put("equipment", hass.get(0).getEquipment().getEquipment());
+					json.put("equipment", "equipment");
 					array.put(json);
 				}
 				json2.put("data", array);
 				response.getWriter().print(json2.toString());
+				System.out.println("denglu  "+json2.toString());
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -168,6 +164,7 @@ public class AdminController {
 		JSONObject json = new JSONObject();
 		try {
 			json.put("status", "true");
+			System.out.println(json.toString());
 			response.getWriter().println(json.toString());
 		} catch (JSONException | IOException e) {
 			// TODO Auto-generated catch block
@@ -191,8 +188,8 @@ public class AdminController {
 		hasService.delete(has2);
 		// 再删除meetingroom
 		meetingroomService.deleteMR(meetingroom);
-		// 再删除设备
-		equipmentService.delete(equipment);
+		
+		
 
 		JSONObject json = new JSONObject();
 		try {
@@ -224,7 +221,7 @@ public class AdminController {
 				System.out.println("name"+ meetingList.get(i).getRoomname());
 				json.put("roomId", meetingList.get(i).getRoomname());
 				json.put("address", meetingList.get(i).getLocate());
-				json.put("location", meetingList.get(i).getFloor());
+				json.put("floor", meetingList.get(i).getFloor());
 				json.put("limit", meetingList.get(i).getPeoplelimit());
 				Has has = new Has();
 				has.setMeetingroom(meetingList.get(i));
@@ -266,15 +263,17 @@ public class AdminController {
 	// 保存修改的信息,对应admin-updateRoom里面的save方法的url
 	@RequestMapping(value = "saveUpdate")
 	public void updateRoom(HttpServletResponse response, HttpServletRequest request) {
-		String  roomid = (String)(request.getParameter("roomId"));
-		String location = request.getParameter("location");
+		String  roomname =request.getParameter("roomname");
+		System.out.println("romnaeme"+ roomname);
+		String location = request.getParameter("address");
 		String floor = request.getParameter("floor");
 		String capacity = request.getParameter("limit");
 		String equipment = request.getParameter("equipment");
         Integer id=Integer.parseInt((String)request.getSession().getAttribute("roomId"));
-		Meetingroom meetingroom = new Meetingroom();
+        System.out.println("romname"+ roomname+" location"+ location+" capacity"+capacity);
+        Meetingroom meetingroom = new Meetingroom();
 		meetingroom.setId(id);
-		meetingroom.setRoomname(roomid);
+		meetingroom.setRoomname(roomname);
 		meetingroom.setLocate(location);
 		meetingroom.setFloor(floor);
 		meetingroom.setPeoplelimit(capacity);
@@ -288,13 +287,13 @@ public class AdminController {
 		// 取出刚才的meetingroom和equipment，获取他们的对象
 		JSONObject json = new JSONObject();
 		try {
-			json.put("status", "true");
+			json.put("status", "save");
 			response.getWriter().println(json.toString());
 		} catch (JSONException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+        System.out.println("fdf");
 	}
 
 	@RequestMapping(value = "search")
@@ -381,7 +380,8 @@ public class AdminController {
 	@RequestMapping(value = "deleteUser")
 	public void deleteUser(HttpServletResponse response, HttpServletRequest request) {
 
-		String userid = request.getParameter("userid");
+		String userid = request.getParameter("id").trim();
+		System.out.println("userid "+userid);
 		Integer id = Integer.parseInt(userid);
 		User user = new User();
 		user.setUserid(id);

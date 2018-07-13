@@ -145,7 +145,7 @@
 
                         <div class="am-form-group">
                             <div class="am-u-sm-9 am-u-sm-push-3">
-                                <button type="submit"  id="btn1" class="am-btn am-btn-primary" onclick="addUser()" >添加用户</button>
+                                <button type="button"  id="btn1" class="am-btn am-btn-primary" onclick="addUser()" >添加用户</button>
                             </div>
                         </div>
                     </form>
@@ -176,10 +176,12 @@
         $.ajax({
                 type: "GET",//为post请求
                 url: "addUser",//这是我在后台接受数据的文件名
+                dataType:"json",
+                timeout:50000,
                 data: $('#form1').serialize(),//将该表单序列化
                 success: function () {
                     alert("Success");
-                    window.location.href="adminaddUser";
+                    window.location.href="adminusers.do";
                 }
             }
         )

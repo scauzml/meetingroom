@@ -186,7 +186,7 @@ window.onload=function () {
                     '                                <td>' +
                     '                                    <div class="am-btn-toolbar">' +
                     '                                        <div class="am-btn-group am-btn-group-xs">' +
-                    '<button class="am-btn am-btn-default am-btn-xs am-text-secondary" id="btn1" value="'+data[i].booked_id+'" onclick="testdelete()"><span class="am-icon-trash-o"></span> 删除</button>' +
+                    '<button class="am-btn am-btn-default am-btn-xs am-text-secondary" id="btn1" value="'+data[i].booked_id+'" onclick="testdelete($(this))"><span class="am-icon-trash-o"></span> 删除</button>' +
                     '                                        </div>' +
                     '                                    </div>' +
                     '                                </td>' +
@@ -214,10 +214,11 @@ window.onload=function () {
 }
 </script>
 <script>
-    function testdelete(){
-        alert("点击了");
-        var no=document.getElementById('btn1').value;
-        alert(no);
+    function testdelete(e){
+    	 alert("点击了");
+         //var no=document.getElementById('btn2').value;
+         var no=$(e).val();
+         alert(no);
         $.ajax({
             type:"GET",
             url:"deleteBook",

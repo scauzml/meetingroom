@@ -62,7 +62,7 @@ public class MeetingroomDaoImpl extends HibernateDaoSupport implements Meetingro
 	public void deleteMR(Meetingroom meetingroom) {
 		// TODO Auto-generated method stub
 		Session session=this.getSession();
-		session.delete(session);
+		session.delete(meetingroom);
 		session.flush();
 		session.close();
 	}
